@@ -12,12 +12,24 @@
         </ion-toolbar>
       </ion-header>
 
-      <ExploreContainer name="Tab 3 page" />
     </ion-content>
   </ion-page>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+import { defineComponent } from 'vue';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import ExploreContainer from '@/components/ExploreContainer.vue';
+
+export default defineComponent({
+  components: {
+    IonPage, IonHeader, IonToolbar, IonTitle, IonContent
+  },
+
+  setup() {
+    return {
+      
+    }
+  }
+ 
+})
 </script>
