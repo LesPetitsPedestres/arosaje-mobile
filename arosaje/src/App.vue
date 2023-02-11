@@ -14,6 +14,11 @@ import { IonApp, IonRouterOutlet } from '@ionic/vue';
     src: url('./assets/fonts/Nunito-VariableFont_wght.ttf');
   }
 
+  @font-face {
+    font-family: 'Dancing Script';
+    src: url('./assets/fonts/DancingScript-VariableFont_wght.ttf');
+  }
+
   ion-app {
     font-family: Nunito !important;
   }

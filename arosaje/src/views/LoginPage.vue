@@ -2,16 +2,27 @@
   <ion-page>
     <ion-content :fullscreen="true">
       <div class="container">
+        <ion-img src="../assets/images/Logo-sansfond.png" alt="Logo Arosaje"></ion-img>
+        <div class="title">
+          <h1>Bienvenue !</h1>
+          <h2>Se connecter</h2>
+        </div>
         <ion-item color="secondary">
-          <ion-icon :icon="mailOutline" slot="start"></ion-icon>
+          <ion-icon :icon="mailOutline" slot="start" size="38px"></ion-icon>
           <ion-input type="email" placeholder="Email" class="custom"></ion-input>
         </ion-item>
         <ion-item color="secondary">
-          <ion-icon :icon="lockClosedOutline" slot="start"></ion-icon>
-          <ion-input type="password" placeholder="****" class="custom"></ion-input>
+          <ion-icon :icon="lockClosedOutline" slot="start" size="38px"></ion-icon>
+          <ion-input type="password" placeholder="********" class="custom"></ion-input>
         </ion-item>
 
         <ion-button color="primary">Se connecter</ion-button>
+
+        <div class="link">
+          <p color="primary">Vous n'avez pas de compte ? <br>
+            <a color="primary" href="">Créer un compte</a> 
+          </p>
+        </div>
       </div>
     </ion-content>
   </ion-page>
@@ -19,7 +30,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { IonPage, IonContent, IonIcon, IonButton } from '@ionic/vue';
+import { IonPage, IonContent, IonIcon, IonButton, IonImg } from '@ionic/vue';
 import { lockClosedOutline, mailOutline } from 'ionicons/icons';
 
 export default defineComponent({
@@ -31,7 +42,7 @@ export default defineComponent({
   },
 
   components: {
-    IonPage, IonContent, IonIcon, IonButton
+    IonPage, IonContent, IonIcon, IonButton, IonImg 
   },
  
 })
@@ -40,30 +51,61 @@ export default defineComponent({
 <style scoped>
 
 .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 33px 20px;
-  gap: 33;
+  gap: 25px;
+}
+
+.title, .link{
+  gap: 5px;
+}
+
+h1 {
+  font-family: Dancing Script;
+  font-size: 55px;
+  color: #395144;
+}
+
+h2 {
+  font-family: Nunito;
+  font-size: 40px;
+  color: #395144;
 }
 
 ion-content {
-  font-family: Nunito !important;
+  font-family: Nunito;
 }
 
 ion-item {
+  font-family: Nunito;
   border-radius: 10px;
+  font-size: 22px;
+  --padding-bottom: 15px;
+  --padding-end: 12px;
+  --padding-start: 12px;
+  --padding-top: 15px;
+  --border-style: none;
 }
 
 ion-input .custom {
+  font-family: Nunito;
   --placeholder-opacity: .8;
-  --padding-bottom: 17px;
-  --padding-end: 15px;
-  --padding-start: 15px;
-  --padding-top: 17px;
 
 }
 
 ion-button {
+  font-family: Nunito;
   --border-radius: 10px;
   --padding-top: 20px;
   --padding-bottom: 20px;
+  font-size: 20px;
+  }
+
+  .link {
+    display: flex;
+    text-align: center;
+    padding: 0px;
   }
 </style>
