@@ -7,3 +7,19 @@
 <script setup lang="ts">
 import { IonApp, IonRouterOutlet } from '@ionic/vue';
 </script>
+
+<style>
+  @font-face {
+    font-family: 'Nunito';
+    src: url('./assets/fonts/Nunito-VariableFont_wght.ttf');
+  }
+
+  @font-face {
+    font-family: 'Dancing Script';
+    src: url('./assets/fonts/DancingScript-VariableFont_wght.ttf');
+  }
+
+  ion-app {
+    font-family: Nunito !important;
+  }
+</style>
