@@ -42,13 +42,16 @@
           </ion-item-group>
         </div>
 
-        <ion-button color="primary">S'inscrire</ion-button>
+        <div class="bottom">
+          <ion-button color="primary">S'inscrire</ion-button>
 
-        <div class="link">
-          <p color="primary">Vous avez déjà un compte ? <br>
-            <a color="primary" href="">Se connecter</a> 
-          </p>
+          <div class="link">
+            <p color="primary">Vous avez déjà un compte ? <br>
+              <a color="primary" href="">Se connecter</a> 
+            </p>
+          </div>
         </div>
+
         </div>
       </div>
     </ion-content>
@@ -82,7 +85,12 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 33px 20px;
   gap: 12px;
+}
+
+ion-img {
+  width: 270px;
 }
 
 .content {
@@ -90,7 +98,6 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 33px 20px;
 }
 
 .title, .link{
@@ -111,17 +118,17 @@ ion-item {
   font-family: Nunito;
   border-radius: 10px;
   font-size: 22px;
-  --padding-bottom: 15px;
-  --padding-end: 12px;
-  --padding-start: 12px;
-  --padding-top: 15px;
+  --padding-bottom: 0px;
+  --padding-end: 10px;
+  --padding-start: 10px;
+  --padding-top: 0px;
   --border-style: none;
+  --min-height: 72px;
 }
 
 ion-input .custom {
   font-family: Nunito;
   --placeholder-opacity: .8;
-
 }
 
 ion-icon {
@@ -141,14 +148,13 @@ ion-item-group {
   align-items: flex-start;
   flex-direction: column;
   gap: 12px;
-  margin-left: 17.5px;
-  margin-right: 17.5px;
 }
 
 .option {
   --padding-end : 0px;
   --padding-top: 0px;
   --padding-start: 0px;
+  --min-height: 0px;
 }
 
 ion-checkbox {
@@ -182,5 +188,11 @@ ion-button {
     display: flex;
     text-align: center;
     padding: 0px;
+  }
+
+  .bottom{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 </style>

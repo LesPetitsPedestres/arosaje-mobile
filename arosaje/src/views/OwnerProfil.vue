@@ -6,6 +6,12 @@
       <ion-label class="title">James Kirkup</ion-label>
 
       <div class="information">
+        <div class="edit">
+          <a href="tabs/owner-edit-profil">
+            <ion-icon :icon="createOutline" color="primary"></ion-icon>
+          </a>
+        </div>
+
         <ion-item-group>
           <ion-item>
             <ion-icon :icon="callOutline" slot="start" color="primary"></ion-icon>
@@ -29,10 +35,59 @@
       <div class="information-photo">
         <div class="top">
           <ion-label class="label" color="primary">Mes plantes</ion-label>
-          <ion-button>
-            <ion-icon slot="icon-only" name="createOutline" color="primary"></ion-icon>
-          </ion-button>
+          <a id="open-modal">
+            <ion-icon :icon="addOutline" color="primary"></ion-icon>
+          </a>
         </div>
+
+        <ion-modal ref="modal" trigger="open-modal">
+      <ion-content>
+        <ion-toolbar>
+          <ion-title>Modal</ion-title>
+          <ion-buttons slot="end">
+            <ion-button color="light" @click="dismiss()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+        <ion-list>
+          <ion-item>
+            <ion-avatar slot="start">
+              <ion-img src="https://i.pravatar.cc/300?u=b"></ion-img>
+            </ion-avatar>
+            <ion-label>
+              <h2>Connor Smith</h2>
+              <p>Sales Rep</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-avatar slot="start">
+              <ion-img src="https://i.pravatar.cc/300?u=a"></ion-img>
+            </ion-avatar>
+            <ion-label>
+              <h2>Daniel Smith</h2>
+              <p>Product Designer</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-avatar slot="start">
+              <ion-img src="https://i.pravatar.cc/300?u=d"></ion-img>
+            </ion-avatar>
+            <ion-label>
+              <h2>Greg Smith</h2>
+              <p>Director of Operations</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-avatar slot="start">
+              <ion-img src="https://i.pravatar.cc/300?u=e"></ion-img>
+            </ion-avatar>
+            <ion-label>
+              <h2>Zoey Smith</h2>
+              <p>CEO</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-modal>
        
         <div class="plantes">
           <!-- Mettre un nombre max pour l'affichage -->
@@ -66,12 +121,12 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { IonPage, IonIcon, IonItem, IonItemGroup, IonLabel } from '@ionic/vue';
-import { callOutline, locationOutline, mailOutline, lockClosedOutline, arrowForwardOutline, createOutline } from 'ionicons/icons';
+import { IonPage, IonIcon, IonItem, IonItemGroup, IonLabel, IonModal, IonImg, IonList, IonContent, IonAvatar, IonToolbar, IonTitle, IonButtons } from '@ionic/vue';
+import { callOutline, locationOutline, mailOutline, lockClosedOutline, arrowForwardOutline, createOutline, addOutline } from 'ionicons/icons';
 
 export default defineComponent({
   components: {
-    IonPage, IonIcon, IonItem, IonItemGroup, IonLabel
+    IonPage, IonIcon, IonItem, IonItemGroup, IonLabel, IonModal, IonImg, IonList, IonContent, IonAvatar, IonToolbar, IonTitle, IonButtons
   },
 
   setup() {
@@ -82,6 +137,7 @@ export default defineComponent({
       lockClosedOutline,
       arrowForwardOutline,
       createOutline, 
+      addOutline
     }
   }
  
@@ -152,13 +208,10 @@ export default defineComponent({
 .information, .information-photo {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 24px;
+  padding: 22px;
   gap: 15px;
   isolation: isolate;
-
-  height: 254px;
 
   /* White */
 
@@ -172,9 +225,34 @@ export default defineComponent({
   flex-grow: 0;
   z-index: 1;
 }
+
+.edit ion-icon {
+  position: absolute;
+  left: 315px;
+  top: 411px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  z-index: 1;
+}
 .information-photo {
-  height: 411px;
   justify-content: flex-start;
+}
+
+.top{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.top ion-icon{
+  position: absolute;
+  left: 315px;
+  top: 711px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  z-index: 1;
 }
 
 ion-item {
@@ -193,7 +271,7 @@ ion-icon {
 }
 
 .plantes {
-  overflow: scroll;
+  overflow-x: scroll;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -209,7 +287,7 @@ ion-icon {
   background-size: cover;
 
   width: 243px;
-  height: 317px;
+  height: 319px;
   border-radius: 20px;
 
   display: flex;
@@ -239,5 +317,6 @@ ion-icon {
   background: #DFE8CC;
   backdrop-filter: none;
   text-decoration: none;
+  font-size: 12px;
 }
 </style>

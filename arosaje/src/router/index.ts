@@ -28,6 +28,10 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/OwnerProfil.vue')
       },
       {
+        path: 'owner-edit-profil',
+        component: () => import('@/views/OwnerEditProfil.vue')
+      },
+      {
         path: 'owner-plants-list',
         component: () => import('@/views/OwnerPlantsList.vue')
       },

@@ -2,27 +2,30 @@
   <ion-page>
     <ion-content :fullscreen="true">
       <div class="container">
-        <ion-img src="../assets/images/Logo-sansfond.png" alt="Logo Arosaje"></ion-img>
+        <ion-img :src="require('@/assets/images/Logo-sansfond.png')" alt="Logo Arosaje"></ion-img>
         <div class="title">
           <h1>Bienvenue !</h1>
           <h2>Se connecter</h2>
         </div>
         <ion-item color="secondary">
-          <ion-icon :icon="mailOutline" slot="start" size="38px"></ion-icon>
+          <ion-icon :icon="mailOutline" slot="start"></ion-icon>
           <ion-input type="email" placeholder="Email" class="custom"></ion-input>
         </ion-item>
         <ion-item color="secondary">
-          <ion-icon :icon="lockClosedOutline" slot="start" size="38px"></ion-icon>
+          <ion-icon :icon="lockClosedOutline" slot="start"></ion-icon>
           <ion-input type="password" placeholder="********" class="custom"></ion-input>
         </ion-item>
 
-        <ion-button color="primary">Se connecter</ion-button>
+        <div class="bottom">
+          <ion-button color="primary">Se connecter</ion-button>
 
-        <div class="link">
-          <p color="primary">Vous n'avez pas de compte ? <br>
-            <a color="primary" href="">Créer un compte</a> 
-          </p>
+          <div class="link">
+            <p color="primary">Vous n'avez pas de compte ? <br>
+              <a color="primary" href="">Créer un compte</a> 
+            </p>
+          </div>
         </div>
+
       </div>
     </ion-content>
   </ion-page>
@@ -78,15 +81,20 @@ ion-content {
   font-family: Nunito;
 }
 
+ion-icon {
+  font-size: 38px;
+}
+
 ion-item {
   font-family: Nunito;
   border-radius: 10px;
   font-size: 22px;
-  --padding-bottom: 15px;
-  --padding-end: 12px;
-  --padding-start: 12px;
-  --padding-top: 15px;
+  --padding-bottom: 0px;
+  --padding-end: 10px;
+  --padding-start: 10px;
+  --padding-top: 0px;
   --border-style: none;
+  --min-height: 72px;
 }
 
 ion-input .custom {
@@ -107,5 +115,11 @@ ion-button {
     display: flex;
     text-align: center;
     padding: 0px;
+  }
+
+  .bottom{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 </style>
