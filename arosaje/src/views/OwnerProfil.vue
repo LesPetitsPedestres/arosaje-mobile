@@ -40,54 +40,43 @@
           </a>
         </div>
 
-        <ion-modal ref="modal" trigger="open-modal">
-      <ion-content>
-        <ion-toolbar>
-          <ion-title>Modal</ion-title>
-          <ion-buttons slot="end">
-            <ion-button color="light" @click="dismiss()">Close</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-        <ion-list>
-          <ion-item>
-            <ion-avatar slot="start">
-              <ion-img src="https://i.pravatar.cc/300?u=b"></ion-img>
-            </ion-avatar>
-            <ion-label>
-              <h2>Connor Smith</h2>
-              <p>Sales Rep</p>
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-avatar slot="start">
-              <ion-img src="https://i.pravatar.cc/300?u=a"></ion-img>
-            </ion-avatar>
-            <ion-label>
-              <h2>Daniel Smith</h2>
-              <p>Product Designer</p>
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-avatar slot="start">
-              <ion-img src="https://i.pravatar.cc/300?u=d"></ion-img>
-            </ion-avatar>
-            <ion-label>
-              <h2>Greg Smith</h2>
-              <p>Director of Operations</p>
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-avatar slot="start">
-              <ion-img src="https://i.pravatar.cc/300?u=e"></ion-img>
-            </ion-avatar>
-            <ion-label>
-              <h2>Zoey Smith</h2>
-              <p>CEO</p>
-            </ion-label>
-          </ion-item>
-        </ion-list>
-      </ion-content>
-    </ion-modal>
+        <ion-modal id="add-modal" ref="modal" trigger="open-modal">
+          <div class="wrapper">
+            <h1>Ajouter une plante</h1>
+
+            <ion-list lines="none">
+              <ion-item color="secondary">
+                <ion-icon :icon="personOutline" slot="start"></ion-icon>
+                <ion-input type="text" placeholder="Nom" class="custom"></ion-input>
+              </ion-item>
+              <ion-item color="secondary">
+                <ion-icon :icon="imagesOutline" slot="start"></ion-icon>
+                <ion-input type="text" placeholder="Ajouter une ou des photo(s)" class="custom"></ion-input>
+              </ion-item>
+              <ion-item color="secondary">
+                <ion-icon :icon="locationOutline" slot="start"></ion-icon>
+                <ion-input type="text" placeholder="Adresse" class="custom"></ion-input>
+              </ion-item>
+  
+              <ion-modal id="calendar" :keep-contents-mounted="true">
+                <ion-datetime id="datetime" color="primary" :show-default-buttons="true"
+                done-text="Valider"
+                cancel-text="Annuler"
+                ></ion-datetime>
+              </ion-modal>
+              <ion-item color="secondary">
+                <ion-icon :icon="calendarNumberOutline" slot="start"></ion-icon>
+                <ion-input type="text" class="custom"><ion-datetime-button datetime="datetime"></ion-datetime-button></ion-input>
+              </ion-item>
+              <!-- TODO Voir pour la sélection d'une range de date -->
+            </ion-list>
+            <div class="buttons">
+                <ion-button color="tertiary" id="cancel">Annuler</ion-button>
+                <ion-button color="primary" id="create">Créer</ion-button>
+            </div>
+          </div>
+            
+        </ion-modal>
        
         <div class="plantes">
           <!-- Mettre un nombre max pour l'affichage -->
@@ -121,12 +110,12 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { IonPage, IonIcon, IonItem, IonItemGroup, IonLabel, IonModal, IonImg, IonList, IonContent, IonAvatar, IonToolbar, IonTitle, IonButtons } from '@ionic/vue';
-import { callOutline, locationOutline, mailOutline, lockClosedOutline, arrowForwardOutline, createOutline, addOutline } from 'ionicons/icons';
+import { IonPage, IonIcon, IonItem, IonItemGroup, IonLabel, IonModal, IonList, IonButton, IonDatetime, IonDatetimeButton, } from '@ionic/vue';
+import { callOutline, locationOutline, mailOutline, lockClosedOutline, arrowForwardOutline, createOutline, addOutline, personOutline, imagesOutline, calendarNumberOutline } from 'ionicons/icons';
 
 export default defineComponent({
   components: {
-    IonPage, IonIcon, IonItem, IonItemGroup, IonLabel, IonModal, IonImg, IonList, IonContent, IonAvatar, IonToolbar, IonTitle, IonButtons
+    IonPage, IonIcon, IonItem, IonItemGroup, IonLabel, IonModal, IonList, IonButton, IonDatetime, IonDatetimeButton,
   },
 
   setup() {
@@ -137,7 +126,10 @@ export default defineComponent({
       lockClosedOutline,
       arrowForwardOutline,
       createOutline, 
-      addOutline
+      addOutline, 
+      personOutline,
+      imagesOutline,
+      calendarNumberOutline 
     }
   }
  
@@ -318,5 +310,93 @@ ion-icon {
   backdrop-filter: none;
   text-decoration: none;
   font-size: 12px;
+}
+
+ion-modal#add-modal {
+    --width: fit-content;
+    --min-width: 417px;
+    --height: fit-content;
+    --border-radius: 20px;
+    --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --margin: 5px
+  }
+
+  ion-modal::part(backdrop) {
+    background: rgb(167, 168, 170);
+    opacity: 1;
+  }
+
+  ion-modal#add-modal .wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 22px;
+    gap: 15px;
+  }
+
+  ion-modal#add-modal h1{
+    color: #395144;
+    font-family: Nunito;
+    text-align: center;
+    font-size: 32px;
+  }
+
+  ion-modal#add-modal ion-icon {
+  font-size: 38px;
+}
+
+ion-modal#add-modal ion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+ion-modal#add-modal ion-item {
+  font-family: Nunito;
+  border-radius: 10px;
+  font-size: 22px;
+  --padding-bottom: 0px;
+  --padding-end: 10px;
+  --padding-start: 10px;
+  --padding-top: 0px;
+  --border-style: none;
+  --min-height: 72px;
+  width: 373px;
+}
+
+ion-modal#add-modal ion-input .custom {
+  font-family: Nunito;
+  --placeholder-opacity: .8;
+
+}
+
+ion-datetime {
+  --background: #ffffff;
+  color: #4B4B4B;
+  border-radius: 16px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 15px;
+}
+
+ion-modal#add-modal ion-button#cancel { 
+  color: #4B4B4B;
+  font-family: Nunito;
+  --border-radius: 10px;
+  --padding-top: 20px;
+  --padding-bottom: 20px;
+  font-size: 20px;
+}
+
+ion-modal#add-modal ion-button#create { 
+  font-family: Nunito;
+  --border-radius: 10px;
+  --padding-top: 20px;
+  --padding-bottom: 20px;
+  font-size: 20px;
 }
 </style>
