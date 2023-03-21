@@ -35,12 +35,12 @@
       <div class="information-photo">
         <div class="top">
           <ion-label class="label" color="primary">Mes plantes</ion-label>
-          <a id="open-modal">
+          <a id="open-modal" @click="setOpen(true)">
             <ion-icon :icon="addOutline" color="primary"></ion-icon>
           </a>
         </div>
 
-        <ion-modal id="add-modal" ref="modal" trigger="open-modal">
+        <ion-modal id="add-modal" ref="modal" :is-open="isOpen">
           <div class="wrapper">
             <h1>Ajouter une plante</h1>
 
@@ -71,7 +71,7 @@
               <!-- TODO Voir pour la sélection d'une range de date -->
             </ion-list>
             <div class="buttons">
-                <ion-button color="tertiary" id="cancel">Annuler</ion-button>
+                <ion-button color="tertiary" id="cancel" @click="setOpen(false)">Annuler</ion-button>
                 <ion-button color="primary" id="create">Créer</ion-button>
             </div>
           </div>
@@ -131,6 +131,18 @@ export default defineComponent({
       imagesOutline,
       calendarNumberOutline 
     }
+  },
+
+  data () {
+     return {
+       isOpen: false,
+     };
+   },
+
+  methods: {
+    setOpen(isOpen: boolean) {
+        this.isOpen = isOpen;
+      },
   }
  
 })
