@@ -7,7 +7,7 @@
 
       <div class="information">
         <div class="edit">
-          <a href="tabs/owner-edit-profil">
+          <a href="/tabs/owner-edit-profil">
             <ion-icon :icon="createOutline" color="primary"></ion-icon>
           </a>
         </div>
@@ -80,6 +80,14 @@
        
         <div class="plantes">
           <!-- Mettre un nombre max pour l'affichage -->
+          <a href="/tabs/owner-plant-details">
+            <div class="plante">
+              <div class="name">
+                <ion-label color="primary" class="label">Pétunia</ion-label>
+                <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
+              </div>
+            </div>
+          </a>
           <div class="plante">
             <div class="name">
               <ion-label color="primary" class="label">Pétunia</ion-label>
@@ -92,13 +100,7 @@
               <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
             </div>
           </div>
-          <div class="plante">
-            <div class="name">
-              <ion-label color="primary" class="label">Pétunia</ion-label>
-              <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
-            </div>
-          </div>
-          <a class="see-more" href="tabs/owner-plants-list">
+          <a class="see-more" href="/tabs/owner-plants-list">
               <ion-label color="primary" class="label">Voir plus</ion-label>
               <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
           </a>

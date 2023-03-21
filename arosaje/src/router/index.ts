@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
     component: TabsPage,
     children: [
       {
-        path: '',
+        path: ' ',
         redirect: '/tabs/login'
       },
       {
@@ -34,6 +34,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'owner-plants-list',
         component: () => import('@/views/OwnerPlantsList.vue')
+      },
+      {
+        path: 'owner-plant-details',
+        component: () => import('@/views/OwnerPlantDetails.vue')
       },
     ]
   }
