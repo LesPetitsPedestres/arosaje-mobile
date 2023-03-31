@@ -80,7 +80,7 @@
        
         <div class="plantes">
           <!-- Mettre un nombre max pour l'affichage -->
-          <a href="/tabs/owner-plant-details">
+          <a href="/tabs/owner-plant-details" class="link-plant">
             <div class="plante">
               <div class="name">
                 <ion-label color="primary" class="label">Pétunia</ion-label>
@@ -300,6 +300,10 @@ ion-icon {
   flex-direction: column;
   align-items: center;
   justify-content: end;
+}
+
+.link-plant {
+  text-decoration: none;
 }
 
 .name, .see-more{
