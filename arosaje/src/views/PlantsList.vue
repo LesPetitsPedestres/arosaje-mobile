@@ -11,7 +11,7 @@
         </div>
       </ion-header>
 
-      <a href="/tabs/owner-plant-details" class="card">
+      <a href="/tabs/plant-details" class="card">
         <ion-card color="secondary" class="card-custom">
           <div class="left">
             <img src="../assets/images/Plante.jpg" alt="plante" class="plante-picture">
@@ -31,7 +31,7 @@
         </ion-card>
       </a>
 
-      <a href="/tabs/owner-plant-details" class="card">
+      <a href="/tabs/plant-details" class="card">
         <ion-card color="secondary" class="card-custom">
           <div class="left">
             <img src="../assets/images/Plante.jpg" alt="plante" class="plante-picture">

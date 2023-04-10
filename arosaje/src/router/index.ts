@@ -24,24 +24,28 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/CreateProfil.vue')
       },
       {
-        path: 'owner-profil',
-        component: () => import('@/views/OwnerProfil.vue')
+        path: 'my-profil',
+        component: () => import('@/views/MyProfil.vue')
       },
       {
-        path: 'owner-edit-profil',
-        component: () => import('@/views/OwnerEditProfil.vue')
+        path: 'edit-my-profil',
+        component: () => import('@/views/EditMyProfil.vue')
       },
       {
-        path: 'owner-plants-list',
-        component: () => import('@/views/OwnerPlantsList.vue')
+        path: 'add-plant',
+        component: () => import('@/views/AddPlant.vue')
       },
       {
-        path: 'owner-plant-details',
-        component: () => import('@/views/OwnerPlantDetails.vue')
+        path: 'plants-list',
+        component: () => import('@/views/PlantsList.vue')
       },
       {
-        path: 'owner-edit-plant-details',
-        component: () => import('@/views/OwnerEditPlantDetails.vue')
+        path: 'plant-details',
+        component: () => import('@/views/PlantDetails.vue')
+      },
+      {
+        path: 'edit-plant-details',
+        component: () => import('@/views/EditPlantDetails.vue')
       },
     ]
   }

@@ -13,7 +13,7 @@
           <ion-label>Tab 2</ion-label>
         </ion-tab-button>
 
-        <ion-tab-button tab="owner-profil" href="/tabs/owner-profil">
+        <ion-tab-button tab="my-profil" href="/tabs/my-profil">
           <ion-icon :icon="square" />
           <ion-label>Tab 3</ion-label>
         </ion-tab-button>

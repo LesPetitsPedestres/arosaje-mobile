@@ -24,7 +24,7 @@
           </ion-item>
         </div>
         <div class="buttons">
-          <ion-button  @click="$router.push('owner-profil')" color="tertiary">Annuler</ion-button>
+          <ion-button  @click="$router.push('my-profil')" color="tertiary">Annuler</ion-button>
           <ion-button color="primary">Enregistrer</ion-button>
         </div>
       </div>
@@ -128,7 +128,7 @@ ion-item {
   gap: 15px;
 }
 
-.cancel {
+.buttons #cancel {
   display: flex;
   flex-direction: row;
   justify-content: center;
