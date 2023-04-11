@@ -3,7 +3,7 @@
 
     <div class="container">
       <div class="profil"></div>
-      <ion-label class="title">James Kirkup</ion-label>
+      <ion-label class="title">{{ firstname }} {{ name }}</ion-label>
 
       <div class="information">
         <div class="edit">
@@ -15,58 +15,22 @@
         <ion-item-group>
           <ion-item>
             <ion-icon :icon="callOutline" slot="start" color="primary"></ion-icon>
-            <ion-label class="label" color="primary">06 66 66 66 66</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-icon :icon="locationOutline" slot="start" color="primary"></ion-icon>
-            <ion-label class="label" color="primary">6 rue des pedestre</ion-label>
+            <ion-label class="label" color="primary">{{ phone }}</ion-label>
           </ion-item>
           <ion-item>
             <ion-icon :icon="mailOutline" slot="start" color="primary"></ion-icon>
-            <ion-label class="label" color="primary">james.kirkup@gmail.com</ion-label>
+            <ion-label class="label" color="primary">{{ mail }}</ion-label>
           </ion-item>
           <ion-item>
             <ion-icon :icon="lockClosedOutline" slot="start" color="primary"></ion-icon>
-            <ion-label class="label" color="primary">********</ion-label>
+            <ion-label class="label" color="primary">{{ password }}</ion-label>
           </ion-item>
         </ion-item-group>
       </div>
 
-      <div class="information-photo">
-        <div class="top">
-          <ion-label class="label" color="primary">Mes plantes</ion-label>
-          <a href="/tabs/add-plant">
-            <ion-icon :icon="addOutline" color="primary"></ion-icon>
-          </a>
-        </div>
-        <div class="plantes">
-          <!-- Mettre un nombre max pour l'affichage -->
-          <a href="/tabs/plant-details" class="link-plant">
-            <div class="plante">
-              <div class="name">
-                <ion-label color="primary" class="label">Pétunia</ion-label>
-                <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
-              </div>
-            </div>
-          </a>
-          <div class="plante">
-            <div class="name">
-              <ion-label color="primary" class="label">Pétunia</ion-label>
-              <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
-            </div>
-          </div>
-          <div class="plante">
-            <div class="name">
-              <ion-label color="primary" class="label">Pétunia</ion-label>
-              <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
-            </div>
-          </div>
-          <a class="see-more" href="/tabs/plants-list">
-              <ion-label color="primary" class="label">Voir plus</ion-label>
-              <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
-          </a>
-        </div>
-      </div>
+      <MyPlants plant_name="Pétunia" v-if="owner"/>
+      <MyGardes plant_name="Pétunia" v-if="sitter"/>
+      <MyAdvices plant_name="Pétunia" v-if="botanist"/>
     </div>
   </ion-page>
 </template>
@@ -74,17 +38,33 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { IonPage, IonIcon, IonItem, IonItemGroup, IonLabel, } from '@ionic/vue';
-import { callOutline, locationOutline, mailOutline, lockClosedOutline, arrowForwardOutline, createOutline, addOutline } from 'ionicons/icons';
+import { callOutline, mailOutline, lockClosedOutline, arrowForwardOutline, createOutline, addOutline } from 'ionicons/icons';
+import MyPlants from '../components/MyPlants.vue';
+import MyGardes from '../components/MyGardes.vue';
+import MyAdvices from '../components/MyAdvices.vue'
 
 export default defineComponent({
+  data() {
+    return {
+      owner: false,
+      sitter: false,
+      botanist: true,
+      name: "Kirkup",
+      firstname: "James",
+      phone: "06 66 66 66 66",
+      mail: "james.kirkup@gmail.com",
+      password:"*******"
+    }
+  }, 
+
   components: {
     IonPage, IonIcon, IonItem, IonItemGroup, IonLabel, 
+    MyPlants, MyGardes, MyAdvices
   },
 
   setup() {
     return {
       callOutline,
-      locationOutline,
       mailOutline, 
       lockClosedOutline,
       arrowForwardOutline,
@@ -156,7 +136,7 @@ export default defineComponent({
   color: #395144;
 }
 
-.information, .information-photo {
+.information {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -186,25 +166,6 @@ export default defineComponent({
   flex-grow: 0;
   z-index: 1;
 }
-.information-photo {
-  justify-content: flex-start;
-}
-
-.top{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.top ion-icon{
-  position: absolute;
-  left: 315px;
-  top: 711px;
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  z-index: 1;
-}
 
 ion-item {
   --border-style: none;
@@ -219,59 +180,5 @@ ion-item {
 
 ion-icon {
   font-size: 30px;
-}
-
-.plantes {
-  overflow-x: scroll;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 292px;
-  height: 319px;  
-  border-radius: 20px;
-  gap: 18px;
-}
-
-.plante {
-  background-image: url("../assets/images/Plante.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-
-  width: 243px;
-  height: 319px;
-  border-radius: 20px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: end;
-}
-
-.link-plant {
-  text-decoration: none;
-}
-
-.name, .see-more{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 32px 28px;
-  gap: 59px;
-  width: 100%;
-
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(5px);
-  border-radius: 20px;
-}
-
-.see-more {
-  width: 243px;
-  height: 97px;
-  align-items: center;
-  background: #DFE8CC;
-  backdrop-filter: none;
-  text-decoration: none;
-  font-size: 12px;
 }
 </style>

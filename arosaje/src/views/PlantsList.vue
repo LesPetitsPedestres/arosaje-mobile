@@ -1,4 +1,5 @@
 <template>
+  <!-- Liste des plantes pour le owner et sitter -->
     <ion-page class="page">
       <ion-header>
         <div class="head">
