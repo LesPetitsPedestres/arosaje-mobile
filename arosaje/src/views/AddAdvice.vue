@@ -1,7 +1,6 @@
 <template>
     <ion-page class="page">
         <div class="container">
-            <!-- <div class="profil"></div> -->
             <ion-label class="title">Ajouter un conseil</ion-label>
             <div class="center">
                 <ion-list lines="none" class="add-fields">
