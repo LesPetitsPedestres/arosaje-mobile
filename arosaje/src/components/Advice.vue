@@ -64,14 +64,6 @@ export default {
       }
     }
   },
-
-//   displayText() {
-//       if (this.showFullText) {
-//         return this.text;
-//       } else {
-//         return this.text.slice(0, 50) + "...";
-//       }
-//     },
 }
 </script>
 

@@ -21,39 +21,6 @@
                 <h4 class="info-title">Demande</h4>
                 <p class="info-date">Du 10/02/2023 au 12/01/2023</p>
             </div>
-
-            <!-- <div class="information-conseil">
-                <h4 class="info-title">Conseils</h4>
-                <div class="content-conseils">
-                    <div class="conseil">
-                        <div class="middle">
-                            <h5 class="name">Bill Trémondus</h5>
-                            <h6 class="title-conseil">Titre</h6>
-                            <p class="text-conseil">{{ displayText }}</p>
-                        </div>
-                        <button class="button" @click="showFullText = true" v-if="!showFullText">
-                            <ion-icon :icon="chevronDownOutline" color="primary"></ion-icon>
-                        </button>
-                        <button class="button" @click="showFullText = false" v-if="showFullText">
-                            <ion-icon :icon="chevronUpOutline" color="primary"></ion-icon>
-                        </button>
-                    </div>
-
-                    <div class="conseil">
-                        <div class="middle">
-                            <h5 class="name">Frédéric Pastis</h5>
-                            <h6 class="title-conseil">Titre</h6>
-                            <p class="text-conseil">{{ displayText }}</p>
-                        </div>
-                        <button class="button" @click="showFullText = true" v-if="!showFullText">
-                            <ion-icon :icon="chevronDownOutline" color="primary"></ion-icon>
-                        </button>
-                        <button class="button" @click="showFullText = false" v-if="showFullText">
-                            <ion-icon :icon="chevronUpOutline" color="primary"></ion-icon>
-                        </button>
-                    </div>
-                </div>
-            </div> -->
             <AdviceCard text="Lorem, ipsum dolor sit amet consectetur adipisi  Ipsam odit optio deleniti voluptatem. Rerum at, dolor laudantium non fugit, odit ad laborum, ullam dolore cupiditate itaque. Nulla ducimus sapiente earum."/>
         </div>
     </ion-page>
