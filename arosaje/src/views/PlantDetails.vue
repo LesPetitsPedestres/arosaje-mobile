@@ -10,14 +10,15 @@
                             <ion-icon :icon="createOutline" color="primary"></ion-icon>
                         </a>
                     </div>
-                <h2>Pétunia</h2>
+                <h2>{{ plant_name }}</h2>
                 <div class="subtitle">
-                    <h3>James Kirkup</h3>
-                    <h3>Montpellier</h3>
+                    <h3>{{ species }}</h3>
+                    <h3>{{ user_firstname }} {{ user_name}}</h3>
+                    <h3>{{ plant_adress }}</h3>
                 </div>
             </div>
 
-            <div class="information">
+            <div class="information" v-if="owner || sitter">
                 <h4 class="info-title">Demande</h4>
                 <p class="info-date">Du 10/02/2023 au 12/01/2023</p>
             </div>
@@ -33,6 +34,22 @@ import { chevronDownOutline, chevronUpOutline, createOutline } from 'ionicons/ic
 import AdviceCard from '../components/Advice.vue'
 
 export default defineComponent({
+    data() {
+        return {
+            owner: true,
+            sitter: false,
+            botanist: false,
+
+            plant_name: "Pétunia", 
+            species: "Cactus",
+            user_name: "Kirkup",
+            user_firstname: "James",
+            plant_adress: "Montpellier",
+
+            advice_content: "Lorem, ipsum dolor sit amet consectetur adipisi  Ipsam odit optio deleniti voluptatem. Rerum at, dolor laudantium non fugit, odit ad laborum, ullam dolore cupiditate itaque. Nulla ducimus sapiente earum.",
+        }
+    },
+
     setup() {
         return {
             chevronDownOutline,
@@ -68,6 +85,7 @@ export default defineComponent({
     padding: 20px 22px 22px;
     gap: 20px;
     align-self: stretch;
+    isolation: isolate;
 
     background: #DFE8CC;
     box-shadow: 0px -4px 20px 9px rgba(0, 0, 0, 0.25);
@@ -75,6 +93,7 @@ export default defineComponent({
     position: absolute;
     left: 0px;
     top: 350px;
+    width: 100%;
 
     flex: none;
     order: 1;
@@ -113,7 +132,7 @@ h3 {
     margin-bottom: 5px;
 }
 
-.information, .information-conseil {
+.information {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -131,10 +150,14 @@ h3 {
 
     flex: none;
     order: 1;
-    flex-grow: 1;
+    flex-grow: 0;
     z-index: 1;
     align-self: stretch;
-    }
+}
+
+ion-icon {
+  font-size: 30px;
+}
 
 .info-title {
     font-weight: 400;
