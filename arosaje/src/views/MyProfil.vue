@@ -1,7 +1,7 @@
 <template>
   <ion-page class="page">
-
     <div class="container">
+      <MainMenu/>
       <div class="profil"></div>
       <ion-label class="title">{{ firstname }} {{ name }}</ion-label>
 
@@ -41,7 +41,8 @@ import { IonPage, IonIcon, IonItem, IonItemGroup, IonLabel, } from '@ionic/vue';
 import { callOutline, mailOutline, lockClosedOutline, arrowForwardOutline, createOutline, addOutline } from 'ionicons/icons';
 import MyPlants from '../components/MyPlants.vue';
 import MyGardes from '../components/MyGardes.vue';
-import MyAdvices from '../components/MyAdvices.vue'
+import MyAdvices from '../components/MyAdvices.vue';
+import MainMenu from '../components/MainMenu.vue'
 
 export default defineComponent({
   data() {
@@ -59,7 +60,7 @@ export default defineComponent({
 
   components: {
     IonPage, IonIcon, IonItem, IonItemGroup, IonLabel, 
-    MyPlants, MyGardes, MyAdvices
+    MyPlants, MyGardes, MyAdvices, MainMenu
   },
 
   setup() {
@@ -128,7 +129,7 @@ export default defineComponent({
   flex: none;
   order: 3;
   flex-grow: 0;
-  z-index: 3;
+  z-index: 1;
 }
 
 .title {

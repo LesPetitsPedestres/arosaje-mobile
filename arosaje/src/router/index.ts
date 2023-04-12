@@ -1,58 +1,56 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
-import TabsPage from '../views/TabsPage.vue'
+import LoginPage from '../views/LoginPage.vue'
+import CreateProfil from '../views/CreateProfil.vue'
+import MyProfil from '../views/MyProfil.vue'
+import EditMyProfil from '../views/EditMyProfil.vue'
+import AddPlant from '../views/AddPlant.vue'
+import PlantsList from '../views/PlantsList.vue'
+import PlantDetails from '../views/PlantDetails.vue'
+import EditPlantDetails from '../views/EditPlantDetails.vue'
+import AddAdvice from '../views/AddAdvice.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/tabs/login'
+    redirect: '/login'
   },
   {
-    path: '/tabs/',
-    component: TabsPage,
-    children: [
-      {
-        path: ' ',
-        redirect: '/tabs/login'
-      },
-      {
-        path: 'login',
-        component: () => import('@/views/LoginPage.vue')
-      },
-      {
-        path: 'create',
-        component: () => import('@/views/CreateProfil.vue')
-      },
-      {
-        path: 'my-profil',
-        component: () => import('@/views/MyProfil.vue')
-      },
-      {
-        path: 'edit-my-profil',
-        component: () => import('@/views/EditMyProfil.vue')
-      },
-      {
-        path: 'add-plant',
-        component: () => import('@/views/AddPlant.vue')
-      },
-      {
-        path: 'plants-list',
-        component: () => import('@/views/PlantsList.vue')
-      },
-      {
-        path: 'plant-details',
-        component: () => import('@/views/PlantDetails.vue')
-      },
-      {
-        path: 'edit-plant-details',
-        component: () => import('@/views/EditPlantDetails.vue')
-      },
-      {
-        path: 'add-advice',
-        component: () => import('@/views/AddAdvice.vue')
-      },
-    ]
-  }
+    path: '/login',
+    component: LoginPage,
+  },
+  {
+    path: '/create',
+    component: CreateProfil,
+  },
+  {
+    path: '/my-profil/',
+    component: MyProfil,
+  },
+  {
+    path: '/edit-my-profil',
+    component: EditMyProfil,
+  },
+  {
+    path: '/add-plant',
+    component: AddPlant,
+  },
+  {
+    path: '/plants-list',
+    component: PlantsList,
+  },
+  {
+    path: '/plant-details',
+    component: PlantDetails,
+  },
+  {
+    path: '/edit-plant-details',
+    component: EditPlantDetails,
+  },
+  {
+    path: '/add-advice',
+    component: AddAdvice,
+  },
 ]
 
 const router = createRouter({
