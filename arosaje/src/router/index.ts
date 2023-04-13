@@ -28,11 +28,11 @@ const routes: Array<RouteRecordRaw> = [
     component: MyProfil,
   },
   {
-    path: '/edit-my-profil',
+    path: '/my-profil/edit-my-profil',
     component: EditMyProfil,
   },
   {
-    path: '/add-plant',
+    path: '/my-profil/add-plant',
     component: AddPlant,
   },
   {
@@ -44,7 +44,7 @@ const routes: Array<RouteRecordRaw> = [
     component: PlantDetails,
   },
   {
-    path: '/edit-plant-details',
+    path: '/plant-details/edit-plant-details',
     component: EditPlantDetails,
   },
   {

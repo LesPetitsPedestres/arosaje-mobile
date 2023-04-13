@@ -2,13 +2,13 @@
     <div class="information-photo">
         <div class="top">
           <ion-label class="label" color="primary">Mes plantes</ion-label>
-          <a href="/tabs/add-plant">
+          <a href="/add-plant">
             <ion-icon :icon="addOutline" color="primary"></ion-icon>
           </a>
         </div>
         <div class="plantes">
           <!-- Mettre un nombre max pour l'affichage -->
-          <a href="/tabs/plant-details" class="link-plant">
+          <a href="/plant-details" class="link-plant">
             <div class="plante">
               <div class="name">
                 <ion-label color="primary" class="label">{{ plant_name }}</ion-label>
@@ -28,7 +28,7 @@
               <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
             </div>
           </div>
-          <a class="see-more" href="/tabs/plants-list">
+          <a class="see-more" href="/plants-list">
               <ion-label color="primary" class="label">Voir plus</ion-label>
               <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
           </a>

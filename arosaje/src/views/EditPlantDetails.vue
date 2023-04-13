@@ -22,7 +22,7 @@
                 </ion-item>
             </div>
             <div class="buttons">
-                <ion-button  @click="$router.push('my-profil')" color="tertiary">Annuler</ion-button>
+                <ion-button  @click="$router.push('/plant-details')" color="tertiary">Annuler</ion-button>
                 <ion-button color="primary">Enregistrer</ion-button>
             </div>
       </div>

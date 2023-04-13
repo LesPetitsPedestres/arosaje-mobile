@@ -2,7 +2,7 @@
     <div class="information-conseil">
         <div class="top">
             <div class="add-advice" v-if="botanist">
-                <a href="/tabs/add-advice">
+                <a href="/add-advice">
                     <ion-icon :icon="addOutline" color="primary"></ion-icon>
                 </a>
             </div>
@@ -14,7 +14,7 @@
                     <div class="top-name">
                         <h5 class="name">Bill Trémondus</h5>
                         <div v-if="botanist" class="edit_delete">
-                            <a href="/tabs/edit-advice">
+                            <a href="/edit-advice">
                                 <ion-icon :icon="createOutline" color="primary"></ion-icon>
                             </a>
                             <a class="button"  @click="setOpen(true)">

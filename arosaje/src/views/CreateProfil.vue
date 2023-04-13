@@ -47,7 +47,7 @@
 
           <div class="link">
             <p color="primary">Vous avez déjà un compte ? <br>
-              <a color="primary" href="/tabs/login">Se connecter</a> 
+              <a color="primary" href="/login">Se connecter</a> 
             </p>
           </div>
         </div>

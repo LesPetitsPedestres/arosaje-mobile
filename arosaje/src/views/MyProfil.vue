@@ -7,7 +7,7 @@
 
       <div class="information">
         <div class="edit">
-          <a href="/tabs/edit-my-profil">
+          <a href="/my-profil/edit-my-profil">
             <ion-icon :icon="createOutline" color="primary"></ion-icon>
           </a>
         </div>
