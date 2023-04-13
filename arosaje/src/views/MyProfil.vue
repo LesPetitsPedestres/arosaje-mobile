@@ -47,9 +47,9 @@ import MainMenu from '../components/MainMenu.vue'
 export default defineComponent({
   data() {
     return {
-      owner: false,
+      owner: true,
       sitter: false,
-      botanist: true,
+      botanist: false,
       name: "Kirkup",
       firstname: "James",
       phone: "06 66 66 66 66",

@@ -7,149 +7,98 @@
             <ion-title color="primary">Liste de mes plantes</ion-title>
           </ion-toolbar>
           <ion-toolbar>
-            <ion-searchbar color="secondary" show-clear-button="always" animated="true" placeholder="Rechercher"></ion-searchbar>
+            <ion-searchbar color="secondary" show-clear-button="always" :animated="true" placeholder="Rechercher"></ion-searchbar>
           </ion-toolbar>
         </div>
       </ion-header>
-
-      <a href="/plant-details" class="card">
-        <ion-card color="secondary" class="card-custom">
-          <div class="left">
-            <img src="../assets/images/Plante.jpg" alt="plante" class="plante-picture">
-            <div class="content">
-              <ion-card-header>
-                <ion-card-title>Pétunia</ion-card-title>
-                <ion-card-subtitle>Montpellier</ion-card-subtitle>
-              </ion-card-header>
-
-              <ion-card-content>
-                James Kirkup
-              </ion-card-content>
-            </div>
-          </div>
-
-          <ion-icon :icon="arrowForwardOutline" color="primary"></ion-icon>
-        </ion-card>
-      </a>
-
-      <a href="/plant-details" class="card">
-        <ion-card color="secondary" class="card-custom">
-          <div class="left">
-            <img src="../assets/images/Plante.jpg" alt="plante" class="plante-picture">
-            <div class="content">
-              <ion-card-header>
-                <ion-card-title>Pétunia</ion-card-title>
-                <ion-card-subtitle>Montpellier</ion-card-subtitle>
-              </ion-card-header>
-
-              <ion-card-content>
-                James Kirkup
-              </ion-card-content>
-            </div>
-          </div>
-
-          <ion-icon :icon="arrowForwardOutline" color="primary"></ion-icon>
-        </ion-card>
-      </a>
-
-      <a href="" class="card">
-        <ion-card color="secondary" class="card-custom">
-          <div class="left">
-            <img src="../assets/images/Plante.jpg" alt="plante" class="plante-picture">
-            <div class="content">
-              <ion-card-header>
-                <ion-card-title>Pétunia</ion-card-title>
-                <ion-card-subtitle>Montpellier</ion-card-subtitle>
-              </ion-card-header>
-
-              <ion-card-content>
-                James Kirkup
-              </ion-card-content>
-            </div>
-          </div>
-
-          <ion-icon :icon="arrowForwardOutline" color="primary"></ion-icon>
-        </ion-card>
-      </a>
-
-      <a href="" class="card">
-        <ion-card color="secondary" class="card-custom">
-          <div class="left">
-            <img src="../assets/images/Plante.jpg" alt="plante" class="plante-picture">
-            <div class="content">
-              <ion-card-header>
-                <ion-card-title>Pétunia</ion-card-title>
-                <ion-card-subtitle>Montpellier</ion-card-subtitle>
-              </ion-card-header>
-
-              <ion-card-content>
-                James Kirkup
-              </ion-card-content>
-            </div>
-          </div>
-
-          <ion-icon :icon="arrowForwardOutline" color="primary"></ion-icon>
-        </ion-card>
-      </a>
-
-      <a href="" class="card">
-        <ion-card color="secondary" class="card-custom">
-          <div class="left">
-            <img src="../assets/images/Plante.jpg" alt="plante" class="plante-picture">
-            <div class="content">
-              <ion-card-header>
-                <ion-card-title>Pétunia</ion-card-title>
-                <ion-card-subtitle>Montpellier</ion-card-subtitle>
-              </ion-card-header>
-
-              <ion-card-content>
-                James Kirkup
-              </ion-card-content>
-            </div>
-          </div>
-
-          <ion-icon :icon="arrowForwardOutline" color="primary"></ion-icon>
-        </ion-card>
-      </a>
-
-      <a href="" class="card">
-        <ion-card color="secondary" class="card-custom">
-          <div class="left">
-            <img src="../assets/images/Plante.jpg" alt="plante" class="plante-picture">
-            <div class="content">
-              <ion-card-header>
-                <ion-card-title>Pétunia</ion-card-title>
-                <ion-card-subtitle>Montpellier</ion-card-subtitle>
-              </ion-card-header>
-
-              <ion-card-content>
-                James Kirkup
-              </ion-card-content>
-            </div>
-          </div>
-
-          <ion-icon :icon="arrowForwardOutline" color="primary"></ion-icon>
-        </ion-card>
-      </a>
-
+      <div v-for="plante in plantes" :key="plante.id">
+        <PlantCard :plant_name="plante.nom" :plant_adress="plante.ville" :plant_photo="plante.photo" />
+      </div>
     </ion-page>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { IonPage } from '@ionic/vue';
-import {arrowForwardOutline} from 'ionicons/icons';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonSearchbar } from '@ionic/vue';
+import PlantCard from '../components/PlantCard.vue'
 
 export default defineComponent({
   components: {
-    IonPage
+    IonPage, IonHeader, IonToolbar, IonTitle, IonSearchbar,
+    PlantCard
   },
 
-  setup() {
+  data() {
     return {
-      arrowForwardOutline,
-    }
-  }
+      plantes: [] as Array<{
+        id: number;
+        nom: string;
+        ville: string;
+        photo: string;
+        proprietaire: string;
+      }>,
+      proprietaire: "Jean",
+    };
+  },
+
+  mounted() {
+    // Exemple de données brutes
+    this.plantes = [
+      {
+        id: 1,
+        nom: "Fougère",
+        ville: "Paris",
+        photo: "https://exemple.com/fougere.jpg",
+        proprietaire: "Jean",
+      },
+      {
+        id: 2,
+        nom: "Orchidée",
+        ville: "Lyon",
+        photo: "https://exemple.com/orchidee.jpg",
+        proprietaire: "Jean",
+      },
+      {
+        id: 3,
+        nom: "Succulente",
+        ville: "Marseille",
+        photo: "https://exemple.com/succulente.jpg",
+        proprietaire: "Pierre",
+      },
+      {
+        id: 4,
+        nom: "Bonsaï",
+        ville: "Nantes",
+        photo: "https://exemple.com/bonsai.jpg",
+        proprietaire: "Jean",
+      },
+      {
+        id: 5,
+        nom: "Palmier",
+        ville: "Bordeaux",
+        photo: "https://exemple.com/palmier.jpg",
+        proprietaire: "Marie",
+      },
+    ];
+
+    // Filtrer les plantes du propriétaire actuel
+    this.plantes = this.plantes.filter((plante) => plante.proprietaire === this.proprietaire);
+    console.log(this.plantes)
+  },
+
+
+
+// Utilisation de l'API
+
+// mounted() {
+//   fetch('https://exemple.com/api/plantes')
+//     .then(response => response.json())
+//     .then(data => {
+//       this.plantes = data
+//     })
+// }
+
+
  
 })
 </script>
