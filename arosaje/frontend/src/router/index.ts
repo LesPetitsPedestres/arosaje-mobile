@@ -24,7 +24,7 @@ const routes: Array<RouteRecordRaw> = [
     component: CreateProfil,
   },
   {
-    path: '/my-profil/',
+    path: '/my-profil/:id',
     component: MyProfil,
   },
   {

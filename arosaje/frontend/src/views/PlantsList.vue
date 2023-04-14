@@ -11,16 +11,26 @@
           </ion-toolbar>
         </div>
       </ion-header>
-      <div v-for="plante in plantes" :key="plante.id">
-        <PlantCard :plant_name="plante.nom" :plant_adress="plante.ville" :plant_photo="plante.photo" />
+      <div v-for="plante in plantes" :key="plante.ID">
+        <PlantCard :plant_name="plante.name" :plant_adress="plante.address" :plant_photo="plante.photo" />
       </div>
     </ion-page>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonSearchbar } from '@ionic/vue';
+import { defineComponent } from 'vue'
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonSearchbar } from '@ionic/vue'
 import PlantCard from '../components/PlantCard.vue'
+
+import axios from 'axios'
+
+interface PlanteResponse {
+  ID: number;
+  name: string;
+  species: string;
+  address: string;
+  photo: string;
+}
 
 export default defineComponent({
   components: {
@@ -30,76 +40,20 @@ export default defineComponent({
 
   data() {
     return {
-      plantes: [] as Array<{
-        id: number;
-        nom: string;
-        ville: string;
-        photo: string;
-        proprietaire: string;
-      }>,
-      proprietaire: "Jean",
+      plantes:[] as PlanteResponse[],
     };
   },
 
   mounted() {
-    // Exemple de données brutes
-    this.plantes = [
-      {
-        id: 1,
-        nom: "Fougère",
-        ville: "Paris",
-        photo: "https://exemple.com/fougere.jpg",
-        proprietaire: "Jean",
-      },
-      {
-        id: 2,
-        nom: "Orchidée",
-        ville: "Lyon",
-        photo: "https://exemple.com/orchidee.jpg",
-        proprietaire: "Jean",
-      },
-      {
-        id: 3,
-        nom: "Succulente",
-        ville: "Marseille",
-        photo: "https://exemple.com/succulente.jpg",
-        proprietaire: "Pierre",
-      },
-      {
-        id: 4,
-        nom: "Bonsaï",
-        ville: "Nantes",
-        photo: "https://exemple.com/bonsai.jpg",
-        proprietaire: "Jean",
-      },
-      {
-        id: 5,
-        nom: "Palmier",
-        ville: "Bordeaux",
-        photo: "https://exemple.com/palmier.jpg",
-        proprietaire: "Marie",
-      },
-    ];
-
-    // Filtrer les plantes du propriétaire actuel
-    this.plantes = this.plantes.filter((plante) => plante.proprietaire === this.proprietaire);
-    console.log(this.plantes)
+    axios.get('http://localhost:3000/plants')
+      .then(response => {
+        this.plantes = response.data;
+      })
+      .catch(error => {
+        console.error(error);
+      })
   },
 
-
-
-// Utilisation de l'API
-
-// mounted() {
-//   fetch('https://exemple.com/api/plantes')
-//     .then(response => response.json())
-//     .then(data => {
-//       this.plantes = data
-//     })
-// }
-
-
- 
 })
 </script>
 

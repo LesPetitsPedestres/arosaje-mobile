@@ -42,9 +42,10 @@ import { callOutline, mailOutline, lockClosedOutline, arrowForwardOutline, creat
 import MyPlants from '../components/MyPlants.vue';
 import MyGardes from '../components/MyGardes.vue';
 import MyAdvices from '../components/MyAdvices.vue';
-import MainMenu from '../components/MainMenu.vue'
+import MainMenu from '../components/MainMenu.vue';
 
 export default defineComponent({
+
   data() {
     return {
       owner: true,
@@ -73,6 +74,7 @@ export default defineComponent({
       addOutline, 
     }
   }, 
+
 })
 </script>
 
