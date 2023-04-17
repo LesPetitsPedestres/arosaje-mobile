@@ -1,8 +1,4 @@
-# arosaje-mobile
-npm install
-
-
-npm install -g @ionic/cli
-
-
-ionic capacitor run android -l --external --verbose
+# Arosaje Mobile - En cours de production
+FrontEnd : Vue.JS et Ionic
+BackEnd : Express.JS - API Rest
+Base de donnée : SQLite -> Migration prévu
