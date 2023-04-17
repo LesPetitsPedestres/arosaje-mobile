@@ -3,7 +3,7 @@
     <div class="container">
       <MainMenu/>
       <div class="profil"></div>
-      <ion-label class="title">{{ firstname }} {{ name }}</ion-label>
+      <ion-label class="title">{{ user.firstname }} {{ user.name }}</ion-label>
 
       <div class="information">
         <div class="edit">
@@ -15,22 +15,22 @@
         <ion-item-group>
           <ion-item>
             <ion-icon :icon="callOutline" slot="start" color="primary"></ion-icon>
-            <ion-label class="label" color="primary">{{ phone }}</ion-label>
+            <ion-label class="label" color="primary">{{ user.phone }}</ion-label>
           </ion-item>
           <ion-item>
             <ion-icon :icon="mailOutline" slot="start" color="primary"></ion-icon>
-            <ion-label class="label" color="primary">{{ mail }}</ion-label>
+            <ion-label class="label" color="primary">{{ user.email }}</ion-label>
           </ion-item>
           <ion-item>
             <ion-icon :icon="lockClosedOutline" slot="start" color="primary"></ion-icon>
-            <ion-label class="label" color="primary">{{ password }}</ion-label>
+            <ion-label class="label" color="primary">{{ user.password }}</ion-label>
           </ion-item>
         </ion-item-group>
       </div>
 
-      <MyPlants plant_name="Pétunia" v-if="owner"/>
-      <MyGardes plant_name="Pétunia" v-if="sitter"/>
-      <MyAdvices plant_name="Pétunia" v-if="botanist"/>
+      <MyPlants plant_name="Pétunia" v-if="user.role === 'owner'"/>
+      <MyGardes plant_name="Pétunia" v-if="user.role === 'sitter' "/>
+      <MyAdvices plant_name="Pétunia" v-if="user.role === 'botanist' "/>
     </div>
   </ion-page>
 </template>
@@ -44,18 +44,23 @@ import MyGardes from '../components/MyGardes.vue';
 import MyAdvices from '../components/MyAdvices.vue';
 import MainMenu from '../components/MainMenu.vue';
 
+import axios from 'axios'
+
+interface UserResponse {
+  ID : string;
+  name: string;
+  firstname: string;
+  phone: string;
+  email: string;
+  password: string;
+  role: string;
+}
+
 export default defineComponent({
 
   data() {
     return {
-      owner: true,
-      sitter: false,
-      botanist: false,
-      name: "Kirkup",
-      firstname: "James",
-      phone: "06 66 66 66 66",
-      mail: "james.kirkup@gmail.com",
-      password:"*******"
+      user:{} as UserResponse,
     }
   }, 
 
@@ -74,6 +79,18 @@ export default defineComponent({
       addOutline, 
     }
   }, 
+
+  mounted() {
+    const userID = this.$route.params.userID;
+    // console.log(userID, "id du user")
+    axios.get(`http://localhost:3000/users/${userID}`)
+      .then(response => {
+        this.user = response.data;
+      })
+      .catch(error => {
+        console.error(error);
+      })
+  },
 
 })
 </script>
@@ -142,7 +159,6 @@ export default defineComponent({
 .information {
   display: flex;
   flex-direction: column;
-  align-items: center;
   padding: 22px;
   gap: 15px;
   isolation: isolate;
@@ -155,6 +171,7 @@ export default defineComponent({
   /* Inside auto layout */
 
   flex: none;
+  align-self: stretch;
   order: 1;
   flex-grow: 0;
   z-index: 1;

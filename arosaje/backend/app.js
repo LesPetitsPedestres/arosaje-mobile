@@ -7,8 +7,8 @@ const app = express();
 app.use(cors());
 
 // Utiliser l'Endpoint des utilisateurs
-app.use('/users', usersRouter);
-app.use('/plants', plantsRouter);
+app.use('', usersRouter);
+app.use('', plantsRouter);
 
 // Démarrer le serveur
 app.listen(3000, () => {

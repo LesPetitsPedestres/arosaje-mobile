@@ -8,7 +8,7 @@ const router = express.Router();
 const db = new sqlite3.Database('../database/arosaje.db');
 
 // Endpoint pour récupérer tous les utilisateurs
-router.get('/', (req, res) => {
+router.get('/plants', (req, res) => {
   db.all('SELECT * FROM plants', (err, rows) => {
     if (err) {
       console.error(err.message);
@@ -17,5 +17,16 @@ router.get('/', (req, res) => {
     res.json(rows);
   });
 });
+
+// router.get('/:plantId', (req, res) => {
+//   const plantId = req.params.plantId;
+//   db.all(`SELECT * FROM plants WHERE id = ${plantId}`, (err, rows) => {
+//     if (err) {
+//       console.error(err.message);
+//       return res.status(500).send('Erreur serveur');
+//     }
+//     res.json(rows);
+//   });
+// });
 
 module.exports = router;
