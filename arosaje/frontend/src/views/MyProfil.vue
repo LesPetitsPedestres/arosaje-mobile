@@ -28,9 +28,23 @@
         </ion-item-group>
       </div>
 
-      <MyPlants plant_name="Pétunia" v-if="user.role === 'owner'"/>
-      <MyGardes plant_name="Pétunia" v-if="user.role === 'sitter' "/>
-      <MyAdvices plant_name="Pétunia" v-if="user.role === 'botanist' "/>
+      <div class="information-photo">
+        <div class="top">
+          <ion-label class="label" color="primary">Mes plantes</ion-label>
+          <a href="/add-plant">
+            <ion-icon :icon="addOutline" color="primary"></ion-icon>
+          </a>
+        </div>
+        <div class="plantes" v-for="plant in plants" :key="plant.ID">
+          <MyPlants :plant_ID="plant.ID" :plant_name="plant.name"  v-if="user.role === 'owner'"/>
+          <a class="see-more" href="/plants-list">
+            <ion-label color="primary" class="label">Voir plus</ion-label>
+            <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
+        </a>
+        </div>
+    </div>
+      <!-- <MyGardes plant_name="{{ plants.name }}" v-if="user.role === 'sitter' "/> -->
+      <!-- <MyAdvices plant_name="{{ plants.name }}" v-if="user.role === 'botanist' "/> -->
     </div>
   </ion-page>
 </template>
@@ -40,14 +54,14 @@ import { defineComponent } from 'vue';
 import { IonPage, IonIcon, IonItem, IonItemGroup, IonLabel, } from '@ionic/vue';
 import { callOutline, mailOutline, lockClosedOutline, arrowForwardOutline, createOutline, addOutline } from 'ionicons/icons';
 import MyPlants from '../components/MyPlants.vue';
-import MyGardes from '../components/MyGardes.vue';
-import MyAdvices from '../components/MyAdvices.vue';
+// import MyGardes from '../components/MyGardes.vue';
+// import MyAdvices from '../components/MyAdvices.vue';
 import MainMenu from '../components/MainMenu.vue';
 
 import axios from 'axios'
 
 interface UserResponse {
-  ID : string;
+  ID: number;
   name: string;
   firstname: string;
   phone: string;
@@ -56,17 +70,26 @@ interface UserResponse {
   role: string;
 }
 
+interface PlantsResponse {
+  ID: number;
+  name: string;
+  owner_id: number;
+}
+
 export default defineComponent({
 
   data() {
     return {
       user:{} as UserResponse,
+      plants: [] as PlantsResponse[],
     }
   }, 
 
   components: {
     IonPage, IonIcon, IonItem, IonItemGroup, IonLabel, 
-    MyPlants, MyGardes, MyAdvices, MainMenu
+    MyPlants,
+    //  MyGardes, MyAdvices,
+     MainMenu
   },
 
   setup() {
@@ -82,14 +105,22 @@ export default defineComponent({
 
   mounted() {
     const userID = this.$route.params.userID;
-    // console.log(userID, "id du user")
     axios.get(`http://localhost:3000/users/${userID}`)
       .then(response => {
         this.user = response.data;
       })
       .catch(error => {
         console.error(error);
+      });
+
+      axios.get(`http://localhost:3000/plants/${userID}`)
+      .then(response => {
+        this.plants = response.data;
       })
+      .catch(error => {
+        console.error(error);
+      });
+
   },
 
 })
@@ -156,7 +187,7 @@ export default defineComponent({
   color: #395144;
 }
 
-.information {
+.information, .information-photo {
   display: flex;
   flex-direction: column;
   padding: 22px;
@@ -200,5 +231,56 @@ ion-item {
 
 ion-icon {
   font-size: 30px;
+}
+
+.top{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.top ion-icon{
+  position: absolute;
+  left: 315px;
+  top: 624px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  z-index: 1;
+}
+
+.plantes {
+  overflow-x: scroll;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 292px;
+  height: 319px;  
+  border-radius: 20px;
+  gap: 18px;
+}
+
+.name, .see-more{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px 28px;
+  gap: 59px;
+  width: 100%;
+
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  border-radius: 20px;
+}
+
+.see-more {
+  width: 243px;
+  height: 97px;
+  align-items: center;
+  background: #DFE8CC;
+  backdrop-filter: none;
+  text-decoration: none;
+  font-size: 12px;
 }
 </style>
