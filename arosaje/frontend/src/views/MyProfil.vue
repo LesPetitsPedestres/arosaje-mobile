@@ -29,22 +29,28 @@
       </div>
 
       <div class="information-photo">
-        <div class="top">
-          <ion-label class="label" color="primary">Mes plantes</ion-label>
+        <div class="top" v-if="user.role === 'owner'">
+          <ion-label class="label" color="primary" >Mes plantes</ion-label>
           <a href="/add-plant">
             <ion-icon :icon="addOutline" color="primary"></ion-icon>
           </a>
         </div>
-        <div class="plantes" v-for="plant in plants" :key="plant.ID">
-          <MyPlants :plant_ID="plant.ID" :plant_name="plant.name"  v-if="user.role === 'owner'"/>
-          <a class="see-more" href="/plants-list">
+        <div class="top" v-if="user.role === 'sitter'">
+          <ion-label class="label" color="primary" >Mes gardes</ion-label>
+        </div>
+        <div class="top" v-if="user.role === 'botanist'">
+          <ion-label class="label" color="primary" >Mes conseils</ion-label>
+        </div>
+        <div class="plantes">
+          <div v-for="plant in plants" :key="plant.ID">
+            <MyPlants :plant_id="plant.ID" :plant_name="plant.name"/>
+          </div>
+          <a class="see-more" href="/plants-list" v-if="plants">
             <ion-label color="primary" class="label">Voir plus</ion-label>
             <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
         </a>
         </div>
-    </div>
-      <!-- <MyGardes plant_name="{{ plants.name }}" v-if="user.role === 'sitter' "/> -->
-      <!-- <MyAdvices plant_name="{{ plants.name }}" v-if="user.role === 'botanist' "/> -->
+      </div>
     </div>
   </ion-page>
 </template>
@@ -54,8 +60,6 @@ import { defineComponent } from 'vue';
 import { IonPage, IonIcon, IonItem, IonItemGroup, IonLabel, } from '@ionic/vue';
 import { callOutline, mailOutline, lockClosedOutline, arrowForwardOutline, createOutline, addOutline } from 'ionicons/icons';
 import MyPlants from '../components/MyPlants.vue';
-// import MyGardes from '../components/MyGardes.vue';
-// import MyAdvices from '../components/MyAdvices.vue';
 import MainMenu from '../components/MainMenu.vue';
 
 import axios from 'axios'
@@ -88,7 +92,6 @@ export default defineComponent({
   components: {
     IonPage, IonIcon, IonItem, IonItemGroup, IonLabel, 
     MyPlants,
-    //  MyGardes, MyAdvices,
      MainMenu
   },
 
@@ -260,7 +263,7 @@ ion-icon {
   gap: 18px;
 }
 
-.name, .see-more{
+.see-more{
   display: flex;
   flex-direction: row;
   justify-content: center;

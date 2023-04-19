@@ -31,4 +31,19 @@ router.get('/plants/:ownerId', (req, res) => {
   });
 });
 
+// Endpoint pour récupérer le détail d'une plante par son ID
+router.get('/plant-details/:plantId', (req, res) => {
+  const plantId = req.params.plantId;
+
+  db.get(`SELECT plants.*, users.firstname, users.name as owner_name, users.role FROM plants
+          JOIN users ON plants.owner_id = users.id
+            WHERE plants.id = ${plantId}`, (err, rows) => {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).send('Erreur serveur');
+    }
+    res.json(rows);
+    }); 
+});
+
 module.exports = router;

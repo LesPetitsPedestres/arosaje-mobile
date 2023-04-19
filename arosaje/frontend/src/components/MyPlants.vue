@@ -1,12 +1,12 @@
 <template>
-  <a href="/plant_details" class="link-plant">
+  <router-link :to="{ path: `/plant-details/${plantId}`}" class="link-plant">
     <div class="plante">
       <div class="name">
         <ion-label color="primary" class="label">{{ plant_name }}</ion-label>
         <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
       </div>
     </div>
-  </a>
+  </router-link>
 </template>
 
 <script lang="ts">
@@ -16,7 +16,7 @@ import { addOutline, arrowForwardOutline } from 'ionicons/icons';
 export default defineComponent ({
     name: 'MyPlants',
     props: {
-      plant_ID: {
+      plantId: {
         type: Number,
       },
       plant_name: {
@@ -60,5 +60,19 @@ ion-icon {
 
 .link-plant {
   text-decoration: none;
+}
+
+.name {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px 28px;
+  gap: 59px;
+  width: 100%;
+
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  border-radius: 20px;
 }
 </style>

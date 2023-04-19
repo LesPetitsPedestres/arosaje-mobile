@@ -10,15 +10,15 @@
                             <ion-icon :icon="createOutline" color="primary"></ion-icon>
                         </a>
                     </div>
-                <h2>{{ plant_name }}</h2>
+                <h2>{{ plant.name }}</h2>
                 <div class="subtitle">
-                    <h3>{{ species }}</h3>
-                    <h3>{{ user_firstname }} {{ user_name}}</h3>
-                    <h3>{{ plant_adress }}</h3>
+                    <h3>{{ plant.species }}</h3>
+                    <h3>{{ plant.firstname }} {{ plant.owner_name}}</h3>
+                    <h3>{{ plant.adress }}</h3>
                 </div>
             </div>
 
-            <div class="information" v-if="owner || sitter">
+            <div class="information" v-if=" plant.role === 'owner' || 'sitter'">
                 <h4 class="info-title">Demande</h4>
                 <p class="info-date">Du 10/02/2023 au 12/01/2023</p>
             </div>
@@ -33,20 +33,24 @@ import { IonPage } from '@ionic/vue';
 import { chevronDownOutline, chevronUpOutline, createOutline } from 'ionicons/icons';
 import AdviceCard from '../components/Advice.vue'
 
+import axios from 'axios'
+
+interface PlantResponse {
+  ID: number;
+  name: string;
+  species: string;
+  adress: string;
+  owner_id: number;
+  firstname: string;
+  owner_name: string;
+  role: string;
+}
+
 export default defineComponent({
     data() {
         return {
-            owner: true,
-            sitter: false,
-            botanist: false,
-
-            plant_name: "Pétunia", 
-            species: "Cactus",
-            user_name: "Kirkup",
-            user_firstname: "James",
-            plant_adress: "Montpellier",
-
-            advice_content: "Lorem, ipsum dolor sit amet consectetur adipisi  Ipsam odit optio deleniti voluptatem. Rerum at, dolor laudantium non fugit, odit ad laborum, ullam dolore cupiditate itaque. Nulla ducimus sapiente earum.",
+            plant: {} as PlantResponse,
+            // advice_content: "Lorem, ipsum dolor sit amet consectetur adipisi  Ipsam odit optio deleniti voluptatem. Rerum at, dolor laudantium non fugit, odit ad laborum, ullam dolore cupiditate itaque. Nulla ducimus sapiente earum.",
         }
     },
 
@@ -62,6 +66,18 @@ export default defineComponent({
         IonPage,
         AdviceCard
     },
+
+    mounted() {
+    const plantID = this.$route.params.plantID;
+    axios.get(`http://localhost:3000/plant-details/${plantID}`)
+      .then(response => {
+        this.plant = response.data;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+  },
 })
 </script>
 

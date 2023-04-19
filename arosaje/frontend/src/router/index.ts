@@ -10,6 +10,16 @@ import PlantDetails from '../views/PlantDetails.vue'
 import EditPlantDetails from '../views/EditPlantDetails.vue'
 import AddAdvice from '../views/AddAdvice.vue'
 
+// AJOUTER UN GARDE ROUTE : 
+// beforeEnter: (to, from, next) => {
+//       if (user.role === 'propriétaire') {
+//         next();
+//       } else {
+//         next('/page-non-autorisee');
+//       }
+//     }
+//   },
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -28,11 +38,11 @@ const routes: Array<RouteRecordRaw> = [
     component: MyProfil,
   },
   {
-    path: '/my-profil/edit-my-profil',
+    path: '/my-profil/:userID/edit-my-profil',
     component: EditMyProfil,
   },
   {
-    path: '/my-profil/add-plant',
+    path: '/add-plant',
     component: AddPlant,
   },
   {
@@ -40,7 +50,7 @@ const routes: Array<RouteRecordRaw> = [
     component: PlantsList,
   },
   {
-    path: '/plant-details',
+    path: '/plant-details/:plantID',
     component: PlantDetails,
   },
   {
