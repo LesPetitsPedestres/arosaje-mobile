@@ -6,7 +6,7 @@
         <div class="container">
             <div class="title">
                     <div class="edit">
-                        <a href="/plant-details/edit-plant-details">
+                        <a href="/plant-details/:plantID/edit-plant-details">
                             <ion-icon :icon="createOutline" color="primary"></ion-icon>
                         </a>
                     </div>

@@ -22,4 +22,6 @@ router.get('/users/:id', (req, res) => {
   });
 });
 
+// Endpoint Update profil user
+
 module.exports = router;

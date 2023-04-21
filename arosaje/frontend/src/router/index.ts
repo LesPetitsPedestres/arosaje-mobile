@@ -54,7 +54,7 @@ const routes: Array<RouteRecordRaw> = [
     component: PlantDetails,
   },
   {
-    path: '/plant-details/edit-plant-details',
+    path: '/plant-details/:plantID/edit-plant-details',
     component: EditPlantDetails,
   },
   {
