@@ -3,24 +3,24 @@
     <form @submit.prevent="updatePlant">
       <div class="picture"> 
         <!-- Ajouter la localisation -->
-        <ion-item color="light">
-            <ion-icon :icon="imagesOutline" slot="start"></ion-icon>
-            <ion-input type="button" @click="capturePhoto" placeholder="Prendre une photo" class="custom"></ion-input>
-        </ion-item>
         <img :src="form.photo_path || '../assets/images/Plante.jpg'" alt="" v-if="imageData == null">
-        <!-- <img :src="imageData" v-if="imageData !== null"> -->
+        <img :src="imageData" v-if="imageData !== null">
       </div>
       <div class="container">
         <ion-label class="title">Editer</ion-label>
           <div class="edit-fields">
               <ion-item color="light">
-                  <ion-input type="text" :clear-input="true" class="custom" v-model="form.name"></ion-input>
+                  <input type="text" class="custom" v-model="form.name" :placeholder="plant.name">
               </ion-item>
               <ion-item>
-                  <ion-input type="text" class="custom" v-model="form.address" ></ion-input>
+                  <input type="text" class="custom" v-model="form.address" :placeholder="plant.address">
               </ion-item>
               <ion-item color="light">
-                  <ion-input type="text" class="custom" v-model="form.species" ></ion-input>
+                  <input type="text" class="custom" v-model="form.species" :placeholder="plant.species">
+              </ion-item>
+              <ion-item color="light">
+                <ion-icon :icon="imagesOutline" slot="start"></ion-icon>
+                <input type="button" @click="capturePhoto" placeholder="Prendre une photo" class="custom">
               </ion-item>
           </div>
           <div class="buttons">
@@ -37,6 +37,7 @@ import { defineComponent } from 'vue';
 import { IonPage } from '@ionic/vue';
 import { imagesOutline } from 'ionicons/icons';
 import { Camera, CameraResultType } from '@capacitor/camera';
+import { Geolocation } from '@capacitor/geolocation';
 
 import axios from 'axios';
 
@@ -44,7 +45,7 @@ interface PlantResponse {
   ID: number;
   name: string;
   species: string;
-  adress: string;
+  address: string;
   owner_id: number;
   firstname: string;
   owner_name: string;
@@ -88,6 +89,7 @@ export default defineComponent({
 
    methods: {
     async capturePhoto() {
+      const position = await Geolocation.getCurrentPosition();
       const image = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
@@ -95,21 +97,27 @@ export default defineComponent({
       });
       this.imageData = image.dataUrl || null;
       this.form.photo_path = this.imageData;
+
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=AIzaSyBfqAMKCMdaV9KQnsM-8uKlguTH-36cyDg`);
+      const address = response.data.results[0].formatted_address;
+
+    // Enregistrer l'adresse dans le formulaire
+    this.form.address = address;
     },
 
     async updatePlant() {
-    const { name, species, address, photo_path } = this.form;
+      const { name, species, address, photo_path } = this.form;
 
-    try {
-      await axios.put(`http://localhost:3000/plant-details/${this.plantID}`, { name, species, address, photo_path }, {
-        maxContentLength: 20000,
-        maxBodyLength: 20000
-      });
-      this.$router.push(`/plant-details/${this.plantID}`);
-    } catch (error) {
-      console.error(error);
-    }
-  },
+      try {
+        await axios.put(`http://localhost:3000/plant-details/${this.plantID}`, { name, species, address, photo_path }, {
+          maxContentLength: 20000,
+          maxBodyLength: 20000
+        });
+        this.$router.push(`/plant-details/${this.plantID}`);
+      } catch (error) {
+        console.error(error);
+      }
+    },
 
   }
 
@@ -180,6 +188,15 @@ ion-item {
   text-decoration: none;
   width: 132px;
   height: 47px;
+}
+
+input{
+  background: transparent;
+  border: none;
+}
+
+input:focus {
+  outline: none;
 }
 
 </style>
