@@ -1,10 +1,12 @@
-const express = require('express');
-const cors = require('cors');
-const usersRouter = require('./users');
-const plantsRouter = require('./plants')
+import express from 'express';
+import cors from 'cors';
+import usersRouter from './users';
+import plantsRouter from './plants';
+import { json } from 'body-parser';
 
 const app = express();
 app.use(cors());
+app.use(json({ limit: '10mb' }));
 
 // Utiliser l'Endpoint des utilisateurs
 app.use('', usersRouter);

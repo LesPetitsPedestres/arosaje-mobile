@@ -6,9 +6,9 @@
         <div class="container">
             <div class="title">
                     <div class="edit">
-                        <a href="/plant-details/:plantID/edit-plant-details">
+                        <button class="button" @click="$router.push(`/plant-details/${plant.ID}/edit-plant-details`)">
                             <ion-icon :icon="createOutline" color="primary"></ion-icon>
-                        </a>
+                        </button>
                     </div>
                 <h2>{{ plant.name }}</h2>
                 <div class="subtitle">
@@ -51,6 +51,7 @@ export default defineComponent({
         return {
             plant: {} as PlantResponse,
             // advice_content: "Lorem, ipsum dolor sit amet consectetur adipisi  Ipsam odit optio deleniti voluptatem. Rerum at, dolor laudantium non fugit, odit ad laborum, ullam dolore cupiditate itaque. Nulla ducimus sapiente earum.",
+            plantID: this.$route.params.plantID
         }
     },
 
@@ -67,17 +68,28 @@ export default defineComponent({
         AdviceCard
     },
 
-    mounted() {
-    const plantID = this.$route.params.plantID;
-    axios.get(`http://localhost:3000/plant-details/${plantID}`)
-      .then(response => {
-        this.plant = response.data;
-      })
-      .catch(error => {
-        console.error(error);
-      });
+//     mounted() {
+//     const plantID = this.$route.params.plantID;
+//     axios.get(`http://localhost:3000/plant-details/${plantID}`)
+//       .then(response => {
+//         this.plant = response.data;
+//       })
+//       .catch(error => {
+//         console.error(error);
+//       });
+//   },
 
+mounted() {
+    this.fetchPlantDetails();
   },
+
+  methods: {
+    async fetchPlantDetails() {
+      const response = await fetch(`http://localhost:3000/plant-details/${this.plantID}`);
+      const data = await response.json();
+      this.plant = data;
+    }
+  }
 })
 </script>
 
@@ -197,5 +209,9 @@ ion-icon {
     order: 1;
     align-self: stretch;
     flex-grow: 0;
+}
+
+.button {
+    background-color: transparent;
 }
 </style>
