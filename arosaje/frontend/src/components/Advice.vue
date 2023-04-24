@@ -12,7 +12,7 @@
             <div class="conseil">
                 <div class="middle">
                     <div class="top-name">
-                        <h5 class="name">Bill Trémondus</h5>
+                        <h5 class="name">{{ botanist_firstname }} {{ botanist_name }}</h5>
                         <div v-if="botanist" class="edit_delete">
                             <a href="/edit-advice">
                                 <ion-icon :icon="createOutline" color="primary"></ion-icon>
@@ -22,21 +22,7 @@
                             </a>
                         </div>
                     </div>
-                    <h6 class="title-conseil">Titre</h6>
-                    <p class="text-conseil">{{ displayText }}</p>
-                </div>
-                <button class="button" @click="showFullText = true" v-if="!showFullText">
-                    <ion-icon :icon="chevronDownOutline" color="primary"></ion-icon>
-                </button>
-                <button class="button" @click="showFullText = false" v-if="showFullText">
-                    <ion-icon :icon="chevronUpOutline" color="primary"></ion-icon>
-                </button>
-            </div>
-
-            <div class="conseil">
-                <div class="middle">
-                    <h5 class="name">Frédéric Pastis</h5>
-                    <h6 class="title-conseil">Titre</h6>
+                    <h6 class="title-conseil">{{ title }}</h6>
                     <p class="text-conseil">{{ displayText }}</p>
                 </div>
                 <button class="button" @click="showFullText = true" v-if="!showFullText">
@@ -77,7 +63,10 @@ import { chevronDownOutline, chevronUpOutline, createOutline, addOutline,trashBi
 export default defineComponent({
     name: 'AdviceCard',
     props: {
-        text: String
+        content: String,
+        botanist_firstname: String,
+        botanist_name: String,
+        title: String,
     },
 
     data() {
@@ -107,10 +96,10 @@ export default defineComponent({
   computed: {
     displayText() {
       if (this.showFullText) {
-        return this.text;
+        return this.content;
       } else {
-        if(this.text !== undefined) {
-            return this.text.slice(0, 50) + "...";
+        if(this.content !== undefined) {
+            return this.content.slice(0, 50) + "...";
         } else {
             return " ";
         }

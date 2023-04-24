@@ -22,7 +22,10 @@
                 <h4 class="info-title">Demande</h4>
                 <p class="info-date">Du 10/02/2023 au 12/01/2023</p>
             </div>
-            <AdviceCard text="Lorem, ipsum dolor sit amet consectetur adipisi  Ipsam odit optio deleniti voluptatem. Rerum at, dolor laudantium non fugit, odit ad laborum, ullam dolore cupiditate itaque. Nulla ducimus sapiente earum."/>
+            <div v-for="advice in advices" :key="advice.ID">
+                <AdviceCard :title="advice.title" :botanist_firstname="advice.botanist_firstname" :botanist_name="advice.botanist_name" :content="advice
+                .content"/>
+            </div>
         </div>
     </ion-page>
 </template>
@@ -46,12 +49,20 @@ interface PlantResponse {
   role: string;
 }
 
+interface AdvicesResponse {
+  ID: number;
+  title: string;
+  botanist_name: string;
+  botanist_firstname: string;
+  content: string;
+}
+
 export default defineComponent({
     data() {
         return {
             plant: {} as PlantResponse,
-            // advice_content: "Lorem, ipsum dolor sit amet consectetur adipisi  Ipsam odit optio deleniti voluptatem. Rerum at, dolor laudantium non fugit, odit ad laborum, ullam dolore cupiditate itaque. Nulla ducimus sapiente earum.",
-            plantID: this.$route.params.plantID
+            plantID: this.$route.params.plantID,
+            advices: [] as  AdvicesResponse[]
         }
     },
 
@@ -68,28 +79,23 @@ export default defineComponent({
         AdviceCard
     },
 
-//     mounted() {
-//     const plantID = this.$route.params.plantID;
-//     axios.get(`http://localhost:3000/plant-details/${plantID}`)
-//       .then(response => {
-//         this.plant = response.data;
-//       })
-//       .catch(error => {
-//         console.error(error);
-//       });
-//   },
+    mounted() {
+        axios.get(`http://localhost:3000/plant-details/${this.plantID}`)
+        .then(response => {
+            this.plant = response.data;
+        })
+        .catch(error => {
+            console.error(error);
+        });
 
-mounted() {
-    this.fetchPlantDetails();
-  },
-
-  methods: {
-    async fetchPlantDetails() {
-      const response = await fetch(`http://localhost:3000/plant-details/${this.plantID}`);
-      const data = await response.json();
-      this.plant = data;
-    }
-  }
+        axios.get(`http://localhost:3000/advices/${this.plantID}`)
+        .then(response => {
+            this.advices = response.data;
+        })
+        .catch(error => {
+            console.error(error);
+        })
+    },
 })
 </script>
 
