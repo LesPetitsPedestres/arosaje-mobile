@@ -1,82 +1,80 @@
 const express = require('express');
-var cookieSession = require('cookie-session')
+
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+
 const cors = require('cors');
 const usersRouter = require('./users');
 const plantsRouter = require('./plants');
 const advicesRouter= require('./advices');
 const bodyParser = require('body-parser');
+// const bcrypt = require('bcrypt');
 
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('../database/arosaje.db');
 
-const corsOption = {
-  origin: 'http://localhost:8100',
-  credentials: true
-}
+// const corsOption = {
+//   origin: 'http://localhost:8100',
+//   credentials: true
+// }
 
 const app = express();
-app.use(cors(corsOption));
+app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
-app.use(cookieSession({
-  name: 'session',
-  keys: ['3qQcV7fwzyeM6JyUq3qQcV7fwzyeM6JyUq'],
 
-  // Cookie Options
-  maxAge: 24 * 60 * 60 * 1000 // 24 hours
-}))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(cookieParser());
+// app.use(session({
+//   secret: '3qQcV7fwzyeM6JyUq3qQcV7fwzyeM6JyUq',
+//   resave: false,
+//   saveUninitialized: true,
+// }));
 
 // Utiliser l'Endpoint des utilisateurs
 app.use('', usersRouter);
 app.use('', plantsRouter);
 app.use('', advicesRouter);
 
+// Endpoint de Connexion
+app.post('/login', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
 
-app.use((req, res, next) => {
-  if (req.session && req.session.userId) {
-    db.get('SELECT * FROM users WHERE id = ?', [req.session.userId], (err, row) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send('Erreur serveur');
-      }
-      if (!row) {
-        return res.status(401).send('Utilisateur non trouvé');
-      }
-      req.user = row;
-      next();
-    });
-  } else {
-    next();
-  }
+  db.get(`SELECT * FROM users WHERE email = ? AND password = ?`, [email, password], (err, row) => {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).json({ error: 'Erreur serveur' });
+    }
+    if (!row) {
+      return res.status(401).json({ error: 'Identifiants invalides' });
+    }
+    res.cookie('userId', row.ID);
+    console.log(req.cookies);
+    res.json({ userId: row.ID });
+  });
 });
 
-// Endpoint de Connexion
-app.post('/login', async (req, res) => {
+// Endpoint d'Inscription
+app.post('/register', async (req, res) => {
   const { email, password } = req.body;
 
-  try {
-    // Rechercher l'utilisateur dans la base de données
-    const user = await db.get('SELECT * FROM users WHERE email = ?', [email]);
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-    if (!user) {
-      return res.status(401).send('Adresse e-mail ou mot de passe incorrect');
+  db.run('INSERT INTO users (email, password) VALUES (?, ?)', [email, hashedPassword], (err) => {
+    if (err) {
+      res.status(500).send('Une erreur est survenue lors de la création du compte');
+    } else {
+      res.status(200).send('Le compte a été créé avec succès');
     }
+  });
+});
 
-    // Vérifier le mot de passe
-    // const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    // if (!isPasswordValid) {
-    //   return res.status(401).send('Adresse e-mail ou mot de passe incorrect');
-    // }
-
-    // Connecter l'utilisateur en créant une session
-    req.session.userId = user.id;
-    console.log(req.session.userId)
-    // return res.status(200).json({ id: user.id });
-    return res.status(200).send('Vous êtes maintenant connecté');
-  } catch (err) {
-    console.error(err);
-    return res.status(500).send('Erreur serveur');
-  }
+// Endpoint de déconnexion
+app.post('/logout', (req, res) => {
+  req.session.destroy();
+  res.status(200).send('Vous êtes maintenant déconnecté');
 });
 
 

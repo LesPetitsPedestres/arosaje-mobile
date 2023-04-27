@@ -7,8 +7,16 @@ const router = express.Router();
 // Ouvrir la connexion à la base de données
 const db = new sqlite3.Database('../database/arosaje.db');
 
+const requireLogin = (req, res, next) => {
+  if (req.session && req.session.user) {
+    next();
+  } else {
+    res.status(401).send('Vous devez être connecté pour accéder à cette page');
+  }
+};
+
 // Endpoint pour récupérer tous les conseils d'une plante
-router.get('/advices/:plantID', (req, res) => {
+router.get('/advices/:plantID', requireLogin, (req, res) => {
     const plantID = req.params.plantID;
 
     db.all(`SELECT advices.*, plants.name as plant_name, users.name as botanist_name, users.firstname as botanist_firstname

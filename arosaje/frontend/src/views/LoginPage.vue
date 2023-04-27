@@ -52,7 +52,6 @@ export default defineComponent({
     return {
       email: '',
       password: '',
-      // userID: null
     }
   }, 
 
@@ -62,20 +61,19 @@ export default defineComponent({
 
   methods: {
     async login() {
-      try {
-        const response = await axios.post('http://localhost:3000/login', {
-          email: this.email,
-          password: this.password,
-          // id: this.userID
-         }, { withCredentials: true });
-
-         const userID = response.data.id;
-         localStorage.setItem('userID', userID)
-
-         this.$router.push(`/my-profil/${userID}`)
-
-      } catch (error) {
-        console.error(error);
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: this.email, password: this.password }),
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const userID = data.userId;
+        console.log(userID);
+        this.$router.push(`/my-profil/${userID}`)
+      } else {
+        console.log("Une erreur est survenue")
       }
     },
   }

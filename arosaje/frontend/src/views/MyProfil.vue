@@ -64,11 +64,6 @@ import MainMenu from '../components/MainMenu.vue';
 
 import axios from 'axios'
 
-// const api = axios.create({
-//   baseURL: 'http://localhost:3000',
-//   withCredentials: true
-// });
-
 interface UserResponse {
   ID: number;
   name: string;
@@ -113,7 +108,8 @@ export default defineComponent({
 
   mounted() {
     const userID = this.$route.params.userID;
-    axios.get(`http://localhost:3000/profil`)
+    console.log(userID)
+    axios.get(`http://localhost:3000/users`)
       .then(response => {
         this.user = response.data;
       })
@@ -121,7 +117,7 @@ export default defineComponent({
         console.error(error);
       });
 
-    axios.get(`http://localhost:3000/plants/${userID}`)
+    axios.get(`http://localhost:3000/plants`)
       .then(response => {
         this.plants = response.data;
       })
