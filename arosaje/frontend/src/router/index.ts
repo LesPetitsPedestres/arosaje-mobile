@@ -43,23 +43,23 @@ const routes: Array<RouteRecordRaw> = [
     component: EditMyProfil,
   },
   {
-    path: '/add-plant',
+    path: '/:userID/add-plant',
     component: AddPlant,
   },
   {
-    path: '/plants-list',
+    path: '/:userID/plants-list',
     component: PlantsList,
   },
   {
-    path: '/plant-details/:plantID',
+    path: '/:userID/plant-details/:plantID',
     component: PlantDetails,
   },
   {
-    path: '/plant-details/:plantID/edit-plant-details',
+    path: '/:userID/plant-details/:plantID/edit-plant-details',
     component: EditPlantDetails,
   },
   {
-    path: '/add-advice',
+    path: '/:userID/add-advice',
     component: AddAdvice,
   },
 ]

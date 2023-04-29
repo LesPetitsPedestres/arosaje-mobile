@@ -1,39 +1,72 @@
 <template>
     <ion-page class="page">
-        <div class="picture">
-            <img src="../assets/images/Plante.jpg" alt="">
-        </div>
-        <div class="container">
-            <div class="title">
-                    <div class="edit">
-                        <button class="button" @click="$router.push(`/plant-details/${plant.ID}/edit-plant-details`)">
-                            <ion-icon :icon="createOutline" color="primary"></ion-icon>
-                        </button>
+        <ion-header>
+            <ion-toolbar>
+            <ion-buttons slot="start">
+                <ion-menu-button></ion-menu-button>
+            </ion-buttons>
+
+            <ion-title>{{ plant.name }}</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content>
+            <div class="picture">
+                <img src="{{ plant.photo_path }}" alt="">
+            </div>
+            <div class="container">
+                <div class="title">
+                        <div class="edit" v-if="user.role == 'owner'">
+                            <button class="button" @click="$router.push(`/${userID}/plant-details/${plant.ID}/edit-plant-details`)">
+                                <ion-icon :icon="createOutline" color="primary"></ion-icon>
+                            </button>
+                        </div>
+                    <h2>{{ plant.name }}</h2>
+                    <div class="subtitle">
+                        <h3>{{ plant.species }}</h3>
+                        <h3>{{ plant.firstname }} {{ plant.owner_name}}</h3>
+                        <h3>{{ plant.adress }}</h3>
                     </div>
-                <h2>{{ plant.name }}</h2>
-                <div class="subtitle">
-                    <h3>{{ plant.species }}</h3>
-                    <h3>{{ plant.firstname }} {{ plant.owner_name}}</h3>
-                    <h3>{{ plant.adress }}</h3>
+                </div>
+
+                <div class="information" v-if=" user.role === 'owner' || 'sitter'">
+                    <h4 class="info-title">Demande</h4>
+                    <p class="info-date">Du 10/02/2023 au 12/01/2023</p>
+                </div>
+
+                <div v-if="advices.length > 0">
+                    <div class="information" v-for="advice in advices" :key="advice.ID">
+                        <AdviceCard :title="advice.title" :botanist_firstname="advice.botanist_firstname" :botanist_name="advice.botanist_name" :content="advice
+                        .content" :role="user.role"/>
+                    </div>
+                </div>
+
+                <div class="information-conseil" v-else>
+                    <div class="top">
+                        <div></div>
+                        <h4 class="info-title">Conseils</h4>
+                        <div class="add-advice" v-if="user.role == 'botanist'">
+                            <button class="button" @click="$router.push(`/${userID}/add-plant`)">
+                                <ion-icon :icon="addOutline" color="primary"></ion-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="content-no-conseils" >
+                        <div class="no-conseil">
+                            <div class="middle">
+                                <h5 class="no-advice">Aucun conseil n'a été trouvé</h5>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="information" v-if=" plant.role === 'owner' || 'sitter'">
-                <h4 class="info-title">Demande</h4>
-                <p class="info-date">Du 10/02/2023 au 12/01/2023</p>
-            </div>
-            <div v-for="advice in advices" :key="advice.ID">
-                <AdviceCard :title="advice.title" :botanist_firstname="advice.botanist_firstname" :botanist_name="advice.botanist_name" :content="advice
-                .content"/>
-            </div>
-        </div>
+        </ion-content>
     </ion-page>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { IonPage } from '@ionic/vue';
-import { chevronDownOutline, chevronUpOutline, createOutline } from 'ionicons/icons';
+import { IonPage, IonIcon, } from '@ionic/vue';
+import { chevronDownOutline, chevronUpOutline, createOutline, addOutline } from 'ionicons/icons';
 import AdviceCard from '../components/Advice.vue'
 
 import axios from 'axios'
@@ -46,7 +79,6 @@ interface PlantResponse {
   owner_id: number;
   firstname: string;
   owner_name: string;
-  role: string;
 }
 
 interface AdvicesResponse {
@@ -57,12 +89,19 @@ interface AdvicesResponse {
   content: string;
 }
 
+interface UserResponse {
+  ID: number;
+  role: string;
+}
+
 export default defineComponent({
     data() {
         return {
             plant: {} as PlantResponse,
             plantID: this.$route.params.plantID,
-            advices: [] as  AdvicesResponse[]
+            advices: [] as  AdvicesResponse[],
+            userID: this.$route.params.userID,
+            user: {} as UserResponse,
         }
     },
 
@@ -70,13 +109,14 @@ export default defineComponent({
         return {
             chevronDownOutline,
             chevronUpOutline,
-            createOutline
+            createOutline,
+            addOutline
         }
     },
 
     components: {
-        IonPage,
-        AdviceCard
+        IonPage, IonIcon,
+        AdviceCard, 
     },
 
     mounted() {
@@ -91,6 +131,14 @@ export default defineComponent({
         axios.get(`http://localhost:3000/advices/${this.plantID}`)
         .then(response => {
             this.advices = response.data;
+        })
+        .catch(error => {
+            console.error(error);
+        })
+
+        axios.get(`http://localhost:3000/users/${this.userID}`)
+        .then(response => {
+            this.user = response.data;
         })
         .catch(error => {
             console.error(error);
@@ -112,26 +160,32 @@ export default defineComponent({
     top: 0px;
 }
 
+.top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+
+  padding: 0px;
+  gap: 5px;
+}
+
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 22px 22px;
+    padding: 20px 22px 60px;
     gap: 20px;
     align-self: stretch;
-    isolation: isolate;
 
     background: #DFE8CC;
     box-shadow: 0px -4px 20px 9px rgba(0, 0, 0, 0.25);
     border-radius: 50px 50px 0px 0px;
-    position: absolute;
-    left: 0px;
-    top: 350px;
+    margin-top: 350px;
     width: 100%;
 
-    flex: none;
-    order: 1;
-    flex-grow: 0;
+    order: 0;
+    z-index: 1;
 }
 
 .title {
@@ -170,7 +224,7 @@ h3 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px 0px;
+    padding: 22px;
     gap: 10px;
 
     font-family: 'Nunito';
@@ -182,10 +236,7 @@ h3 {
 
     /* Inside auto layout */
 
-    flex: none;
     order: 1;
-    flex-grow: 0;
-    z-index: 1;
     align-self: stretch;
 }
 
@@ -199,10 +250,8 @@ ion-icon {
     line-height: 33px;
     text-align: center;
     margin: 0px;
-    flex: none;
     order: 0;
     align-self: stretch;
-    flex-grow: 0;
 }
 
 .info-date {
@@ -211,13 +260,62 @@ ion-icon {
     line-height: 27px;
     text-align: center;
     margin: 0px;
-    flex: none;
     order: 1;
     align-self: stretch;
-    flex-grow: 0;
 }
 
 .button {
     background-color: transparent;
 }
+
+.information-conseil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 22px;
+    gap: 10px;
+
+    font-family: 'Nunito';
+    font-style: normal;
+
+    color: #395144;
+    background: #FFFFFF;
+    border-radius: 20px;
+
+    /* Inside auto layout */
+
+    align-self: stretch;
+}
+
+
+.content-no-conseils {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+
+    height: auto;
+    overflow-y: scroll;
+}
+
+.no-conseil {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    overflow-y: scroll;
+    border: none;
+    height: auto;
+
+    gap: 15px;
+}
+
+.middle {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+}
+
 </style>

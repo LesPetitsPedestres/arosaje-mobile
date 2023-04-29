@@ -1,32 +1,40 @@
 <template>
     <ion-page class="page">
+      <ion-header>
+            <ion-toolbar>
+            <ion-buttons slot="start">
+                <ion-menu-button></ion-menu-button>
+            </ion-buttons>
+
+            <ion-title>Modifier mon profil</ion-title>
+            </ion-toolbar>
+        </ion-header>
       <div class="container">
         <div class="profil"></div>
         <ion-label class="title">Editer</ion-label>
-        <div class="edit-fields">
-          <ion-item color="light">
-            <ion-input type="text" placeholder="James" class="custom"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input type="text" placeholder="Kirkup" class="custom"></ion-input>
-          </ion-item>
-          <ion-item color="light">
-            <ion-input type="tel" placeholder="06 66 65 68 98" class="custom"></ion-input>
-          </ion-item>
-          <ion-item color="light">
-            <ion-input type="adress" placeholder="47 rue des pédestre, Montpellier" class="custom"></ion-input>
-          </ion-item>
-          <ion-item color="light">
-            <ion-input type="email" placeholder="james.kirkup@gmail.com" class="custom"></ion-input>
-          </ion-item>
-          <ion-item color="light">
-            <ion-input type="password" placeholder="motdepasse" class="custom"></ion-input>
-          </ion-item>
-        </div>
-        <div class="buttons">
-          <ion-button  @click="$router.push('my-profil')" color="tertiary">Annuler</ion-button>
-          <ion-button color="primary">Enregistrer</ion-button>
-        </div>
+        <form @submit.prevent="updateProfil">
+          <div class="edit-fields">
+            <ion-item color="light">
+              <input type="text" v-model="form.name" :placeholder="user.name" class="custom">
+            </ion-item>
+            <ion-item>
+              <input type="text" v-model="form.firstname" :placeholder="user.firstname" class="custom">
+            </ion-item>
+            <ion-item color="light">
+              <input type="tel" v-model="form.phone" :placeholder="user.phone" class="custom">
+            </ion-item>
+            <ion-item color="light">
+              <input type="email" v-model="form.email" :placeholder="user.email" class="custom">
+            </ion-item>
+            <ion-item color="light">
+              <input type="password" v-model="form.password" :placeholder="user.password" class="custom">
+            </ion-item>
+          </div>
+          <div class="buttons">
+            <ion-button  @click="$router.push(`/my-profil/${user.ID}`)" color="tertiary">Annuler</ion-button>
+            <ion-button type="submit" color="primary">Enregistrer</ion-button>
+          </div>
+        </form>
       </div>
     </ion-page>
 </template>
@@ -35,14 +43,60 @@
 import { defineComponent } from 'vue';
 import { IonPage } from '@ionic/vue';
 
+import axios from 'axios'
+
+interface UserResponse {
+  ID: number;
+  name: string;
+  firstname: string;
+  phone: string;
+  email: string;
+  password: string;
+}
+
 export default defineComponent({
   components: {
-    IonPage
+    IonPage,
   },
 
-  setup() {
+  data() {
     return {
+      user: {} as UserResponse,
+      form: {
+        name: '',
+        firstname: '',
+        phone: '',
+        email: '',
+        password: '',
+      },
+      userID: this.$route.params.userID
     }
+  },
+
+  mounted() {
+    axios.get(`http://localhost:3000/users/${this.userID}`)
+      .then(response => {
+        this.user = response.data;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  },
+
+  methods: {
+    async updateProfil() {
+      const { name, firstname, phone, email, password } = this.form;
+ 
+      try {
+        await axios.put(`http://localhost:3000/users/${this.userID}`, { name, firstname, phone, email, password }, {
+          maxContentLength: 20000,
+          maxBodyLength: 20000
+        });
+        this.$router.push(`/my-profil/${this.userID}`);
+      } catch (error) {
+        console.error(error);
+      }
+    },
   }
  
 })
@@ -58,34 +112,29 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 112px 22px 22px;
+  padding: 0px 22px 22px;
   gap: 20px;
-  isolation: isolate;
-  margin-top: 221px;
-
-  /* Secondary */
+  align-self: stretch;
+  margin-top: 220px;
 
   background: #DFE8CC;
+  width: 100%;
+  height: 844px;
   /* Shadow 1 */
 
   box-shadow: 0px -4px 20px 9px rgba(0, 0, 0, 0.25);
   border-radius: 50px 50px 0px 0px;
 
   /* Inside auto layout */
-
-  flex: none;
   order: 0;
-  flex-grow: 0;
 }
 
 .profil {
   box-sizing: border-box;
 
-  position: absolute;
+  margin-top: -100px;
   width: 184px;
   height: 184px;
-  left: 100px;
-  top: 100px;
 
   background-image: url("../assets/images/fondplante.jpg");
   background-repeat: no-repeat;
@@ -98,10 +147,7 @@ export default defineComponent({
 
   /* Inside auto layout */
 
-  flex: none;
-  order: 3;
-  flex-grow: 0;
-  z-index: 3;
+  order: 0;
 }
 
 .title {
@@ -109,8 +155,15 @@ export default defineComponent({
   color: #395144;
 }
 
+form{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .edit-fields {
-  gap: 25px;
+  gap: 20px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -126,6 +179,7 @@ ion-item {
   flex-direction: row;
   align-items: center;
   gap: 15px;
+  margin-top: 10px;
 }
 
 .buttons #cancel {
@@ -140,5 +194,15 @@ ion-item {
   width: 132px;
   height: 47px;
 }
+
+input{
+  background: transparent;
+  border: none;
+}
+
+input:focus {
+  outline: none;
+}
+
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ path: `/plant-details/${plantId}`}" class="link-plant">
+  <router-link :to="{ path: `/${user_id}/plant-details/${plant_id}`}" class="link-plant">
     <div class="plante">
       <div class="name">
         <ion-label color="primary" class="label">{{ plant_name }}</ion-label>
@@ -12,16 +12,20 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { addOutline, arrowForwardOutline } from 'ionicons/icons';
+import { IonLabel, IonIcon } from '@ionic/vue';
 
 export default defineComponent ({
     name: 'MyPlants',
     props: {
-      plantId: {
+      plant_id: {
         type: Number,
       },
       plant_name: {
         type: String,
       },
+      user_id: {
+        type: Number,
+      }
     },
 
     setup() {
@@ -30,6 +34,10 @@ export default defineComponent ({
             addOutline,
         }
     },
+
+    components: {
+      IonLabel, IonIcon
+    }
 })
 
 </script>

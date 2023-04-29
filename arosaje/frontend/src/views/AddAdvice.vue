@@ -1,5 +1,14 @@
 <template>
     <ion-page class="page">
+      <ion-header>
+            <ion-toolbar>
+            <ion-buttons slot="start">
+                <ion-menu-button></ion-menu-button>
+            </ion-buttons>
+
+            <ion-title>Ajouter un conseil</ion-title>
+            </ion-toolbar>
+        </ion-header>
         <div class="container">
             <ion-label class="title">Ajouter un conseil</ion-label>
             <div class="center">

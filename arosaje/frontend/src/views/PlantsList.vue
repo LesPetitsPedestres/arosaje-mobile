@@ -4,6 +4,9 @@
       <ion-header>
         <div class="head">
           <ion-toolbar>
+            <ion-buttons slot="start">
+                <ion-menu-button></ion-menu-button>
+            </ion-buttons>
             <ion-title color="primary">Liste de mes plantes</ion-title>
           </ion-toolbar>
           <ion-toolbar>
@@ -35,7 +38,7 @@ interface PlanteResponse {
 export default defineComponent({
   components: {
     IonPage, IonHeader, IonToolbar, IonTitle, IonSearchbar,
-    PlantCard
+    PlantCard,
   },
 
   data() {

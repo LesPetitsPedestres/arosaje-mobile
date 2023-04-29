@@ -1,8 +1,16 @@
 <template>
   <ion-page class="page">
+    <ion-header>
+            <ion-toolbar>
+            <ion-buttons slot="start">
+                <ion-menu-button></ion-menu-button>
+            </ion-buttons>
+
+            <ion-title>Modifier {{ plant.name }}</ion-title>
+            </ion-toolbar>
+        </ion-header>
     <form @submit.prevent="updatePlant">
       <div class="picture"> 
-        <!-- Ajouter la localisation -->
         <img :src="form.photo_path || '../assets/images/Plante.jpg'" alt="" v-if="imageData == null">
         <img :src="imageData" v-if="imageData !== null">
       </div>
@@ -54,7 +62,7 @@ interface PlantResponse {
 
 export default defineComponent({
   components: {
-    IonPage
+    IonPage,
   },
 
   setup() {
@@ -73,7 +81,8 @@ export default defineComponent({
         address: '',
         photo_path: null as string | null,
       },
-      plantID: this.$route.params.plantID
+      plantID: this.$route.params.plantID,
+      userID: this.$route.params.userID,
     }
   },
 
@@ -113,7 +122,7 @@ export default defineComponent({
           maxContentLength: 20000,
           maxBodyLength: 20000
         });
-        this.$router.push(`/plant-details/${this.plantID}`);
+        this.$router.push(`${this.userID}/plant-details/${this.plantID}`);
       } catch (error) {
         console.error(error);
       }
@@ -138,7 +147,6 @@ export default defineComponent({
     padding: 20px 22px 22px;
     gap: 20px;
     align-self: stretch;
-    isolation: isolate;
     margin-top: 200px;
 
     background: #DFE8CC;
@@ -148,9 +156,7 @@ export default defineComponent({
     width: 100%;
     height: 100%;
 
-    flex: none;
     order: 1;
-    flex-grow: 0;
 }
 
 .title {

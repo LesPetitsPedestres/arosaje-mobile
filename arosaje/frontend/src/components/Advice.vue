@@ -1,19 +1,19 @@
 <template>
     <div class="information-conseil">
         <div class="top">
-            <div class="add-advice" v-if="botanist">
-                <a href="/add-advice">
+            <div class="add-advice" v-if="role == 'botanist'">
+                <button class="button" @click="$router.push(`/${userID}/add-plant`)">
                     <ion-icon :icon="addOutline" color="primary"></ion-icon>
-                </a>
+                </button>
             </div>
             <h4 class="info-title">Conseils</h4>
         </div>
-        <div class="content-conseils" v-if="advice">
+        <div class="content-conseils">
             <div class="conseil">
                 <div class="middle">
                     <div class="top-name">
                         <h5 class="name">{{ botanist_firstname }} {{ botanist_name }}</h5>
-                        <div v-if="botanist" class="edit_delete">
+                        <div v-if="role == 'botanist'" class="edit_delete">
                             <a href="/edit-advice">
                                 <ion-icon :icon="createOutline" color="primary"></ion-icon>
                             </a>
@@ -33,13 +33,6 @@
                 </button>
             </div>
         </div>
-        <div class="content-no-conseils" v-else>
-            <div class="no-conseil">
-                <div class="middle">
-                    <h5 class="no-advice">Aucun conseil n'a été trouvé</h5>
-                </div>
-            </div>
-        </div>
 
         <ion-modal ref="modal" id="add-modal" :is-open="isOpen">
             <ion-content>
@@ -57,7 +50,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { IonModal } from '@ionic/vue'
+import { IonModal, IonIcon, IonButton, IonContent, } from '@ionic/vue'
 import { chevronDownOutline, chevronUpOutline, createOutline, addOutline,trashBinOutline } from 'ionicons/icons';
 
 export default defineComponent({
@@ -67,20 +60,19 @@ export default defineComponent({
         botanist_firstname: String,
         botanist_name: String,
         title: String,
+        role: String,
     },
 
     data() {
         return {
-            botanist: true, 
-
             showFullText: false,
             isOpen: false,
-            advice: true,
+            userID: this.$route.params.userID
         }
     },
 
     components: {
-        IonModal,
+        IonModal, IonIcon, IonButton, IonContent,
     },
 
     setup() {
@@ -132,10 +124,7 @@ export default defineComponent({
 
     /* Inside auto layout */
 
-    flex: none;
     order: 2;
-    flex-grow: 1;
-    z-index: 1;
     align-self: stretch;
 }
 
@@ -189,14 +178,14 @@ export default defineComponent({
     flex-grow: 0;
 }
 
-.content-conseils, .content-no-conseils {
+.content-conseils{
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 0px;
     gap: 17px;
 
-    height: 392.67px;
+    height: auto;
     overflow-y: scroll;
 
     flex: none;
@@ -204,11 +193,7 @@ export default defineComponent({
     flex-grow: 0;
 }
 
-.content-no-conseils{
-    height: auto;
-}
-
-.conseil, .no-conseil {
+.conseil {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -220,14 +205,7 @@ export default defineComponent({
 
     gap: 15px;
     border-bottom: 1px solid #395144;
-    flex: none;
     order: 0;
-    flex-grow: 0;
-}
-
-.no-conseil {
-    border: none;
-    height: auto;
 }
 
 .middle {
@@ -235,9 +213,7 @@ export default defineComponent({
     flex-direction: column;
     align-items: flex-start;
     padding: 0px;
-    flex: none;
     order: 0;
-    flex-grow: 0;
 }
 
 .name {

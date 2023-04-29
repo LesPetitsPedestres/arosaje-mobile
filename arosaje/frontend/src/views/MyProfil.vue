@@ -1,66 +1,77 @@
 <template>
   <ion-page class="page">
-    <div class="container">
-      <MainMenu/>
-      <div class="profil"></div>
-      <ion-label class="title">{{ user.firstname }} {{ user.name }}</ion-label>
+    <ion-header>
+            <ion-toolbar>
+            <ion-buttons slot="start">
+                <ion-menu-button></ion-menu-button>
+            </ion-buttons>
 
-      <div class="information">
-        <div class="edit">
-          <a href="/my-profil/edit-my-profil">
-            <ion-icon :icon="createOutline" color="primary"></ion-icon>
-          </a>
-        </div>
+            <ion-title>Mon profil</ion-title>
+            </ion-toolbar>
+        </ion-header>
+      <div class="container">
+        <div class="profil"></div>
+        <ion-label class="title">{{ user.firstname }} {{ user.name }}</ion-label>
 
-        <ion-item-group>
-          <ion-item>
-            <ion-icon :icon="callOutline" slot="start" color="primary"></ion-icon>
-            <ion-label class="label" color="primary">{{ user.phone }}</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-icon :icon="mailOutline" slot="start" color="primary"></ion-icon>
-            <ion-label class="label" color="primary">{{ user.email }}</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-icon :icon="lockClosedOutline" slot="start" color="primary"></ion-icon>
-            <ion-label class="label" color="primary">{{ user.password }}</ion-label>
-          </ion-item>
-        </ion-item-group>
-      </div>
-
-      <div class="information-photo">
-        <div class="top" v-if="user.role === 'owner'">
-          <ion-label class="label" color="primary" >Mes plantes</ion-label>
-          <a href="/add-plant">
-            <ion-icon :icon="addOutline" color="primary"></ion-icon>
-          </a>
-        </div>
-        <div class="top" v-if="user.role === 'sitter'">
-          <ion-label class="label" color="primary" >Mes gardes</ion-label>
-        </div>
-        <div class="top" v-if="user.role === 'botanist'">
-          <ion-label class="label" color="primary" >Mes conseils</ion-label>
-        </div>
-        <div class="plantes">
-          <div v-for="plant in plants" :key="plant.ID">
-            <MyPlants :plant_id="plant.ID" :plant_name="plant.name"/>
+        <div class="information">
+          <div class="edit">
+            <button class="button" @click="$router.push(`/my-profil/${user.ID}/edit-my-profil`)">
+                <ion-icon :icon="createOutline" color="primary"></ion-icon>
+            </button>
           </div>
-          <a class="see-more" href="/plants-list" v-if="plants">
-            <ion-label color="primary" class="label">Voir plus</ion-label>
-            <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
-        </a>
+          <div class="items">
+            <ion-item>
+              <ion-icon :icon="callOutline" slot="start" color="primary"></ion-icon>
+              <ion-label class="label" color="primary">{{ user.phone }}</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-icon :icon="mailOutline" slot="start" color="primary"></ion-icon>
+              <ion-label class="label" color="primary">{{ user.email }}</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-icon :icon="lockClosedOutline" slot="start" color="primary"></ion-icon>
+              <ion-label class="label" color="primary">{{ user.password }}</ion-label>
+            </ion-item>
+          </div>
+        </div>
+
+        <div class="information-photo">
+          <div class="top" v-if="user.role === 'owner'">
+            <div></div>
+            <ion-label class="label" color="primary" >Mes plantes</ion-label>
+            <button class="button" @click="$router.push(`/${user.ID}/add-plant`)">
+              <ion-icon :icon="addOutline" color="primary"></ion-icon>
+            </button>
+          </div>
+          <div class="top" v-if="user.role === 'sitter'">
+            <div></div>
+            <ion-label class="label" color="primary" >Mes gardes</ion-label>
+            <div></div>
+          </div>
+          <div class="top" v-if="user.role === 'botanist'">
+            <div></div>
+            <ion-label class="label" color="primary" >Mes conseils</ion-label>
+            <div></div>
+          </div>
+          <div class="plantes">
+            <div v-for="plant in plants" :key="plant.ID">
+              <MyPlants :plant_id="plant.ID" :plant_name="plant.name" :user_id="user.ID"/>
+            </div>
+            <button class="see-more" color="secondary" @click="$router.push(`/${user.ID}/plants-list`)" v-if="plants">
+              Voir plus
+              <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
+          </button>
+          </div>
         </div>
       </div>
-    </div>
   </ion-page>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { IonPage, IonIcon, IonItem, IonItemGroup, IonLabel, } from '@ionic/vue';
+import { IonPage, IonIcon, IonItem, IonLabel,  } from '@ionic/vue';
 import { callOutline, mailOutline, lockClosedOutline, arrowForwardOutline, createOutline, addOutline } from 'ionicons/icons';
 import MyPlants from '../components/MyPlants.vue';
-import MainMenu from '../components/MainMenu.vue';
 
 import axios from 'axios'
 
@@ -90,9 +101,8 @@ export default defineComponent({
   }, 
 
   components: {
-    IonPage, IonIcon, IonItem, IonItemGroup, IonLabel, 
+    IonPage, IonIcon, IonItem, IonLabel,
     MyPlants,
-     MainMenu
   },
 
   setup() {
@@ -108,7 +118,6 @@ export default defineComponent({
 
   mounted() {
     const userID = this.$route.params.userID;
-    console.log(userID)
     axios.get(`http://localhost:3000/users/${userID}`)
       .then(response => {
         this.user = response.data;
@@ -124,7 +133,6 @@ export default defineComponent({
       .catch(error => {
         console.error(error);
       });
-
   },
 
 })
@@ -140,9 +148,8 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 112px 22px 22px;
+  padding: 0px 22px 22px;
   gap: 20px;
-  isolation: isolate;
   margin-top: 221px;
 
   /* Secondary */
@@ -154,20 +161,15 @@ export default defineComponent({
   border-radius: 50px 50px 0px 0px;
 
   /* Inside auto layout */
-
-  flex: none;
   order: 0;
-  flex-grow: 0;
 }
 
 .profil {
   box-sizing: border-box;
+  margin-top: -100px;
 
-  position: absolute;
   width: 184px;
   height: 184px;
-  left: 100px;
-  top: 100px;
 
   background-image: url("../assets/images/fondplante.jpg");
   background-repeat: no-repeat;
@@ -180,10 +182,7 @@ export default defineComponent({
 
   /* Inside auto layout */
 
-  flex: none;
-  order: 3;
-  flex-grow: 0;
-  z-index: 1;
+  order: 0;
 }
 
 .title {
@@ -196,7 +195,6 @@ export default defineComponent({
   flex-direction: column;
   padding: 22px;
   gap: 15px;
-  isolation: isolate;
 
   /* White */
 
@@ -205,21 +203,23 @@ export default defineComponent({
 
   /* Inside auto layout */
 
-  flex: none;
   align-self: stretch;
   order: 1;
-  flex-grow: 0;
-  z-index: 1;
 }
 
-.edit ion-icon {
-  position: absolute;
-  left: 315px;
-  top: 411px;
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  z-index: 1;
+.information {
+  gap: 0px;
+}
+
+.items{
+  display: flex;
+  flex-direction: column;
+}
+
+.edit {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 ion-item {
@@ -239,18 +239,12 @@ ion-icon {
 
 .top{
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-}
+  align-self: stretch;
 
-.top ion-icon{
-  position: absolute;
-  left: 315px;
-  top: 624px;
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  z-index: 1;
+  padding: 0px;
+  gap: 5px;
 }
 
 .plantes {
@@ -269,22 +263,19 @@ ion-icon {
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  padding: 32px 28px;
-  gap: 59px;
+  padding: 22px 28px;
   width: 100%;
+  font-size: 16px;
 
-  background: rgba(255, 255, 255, 0.5);
+  background: #DFE8CC;
+  color: #395144;
   backdrop-filter: blur(5px);
   border-radius: 20px;
-}
-
-.see-more {
-  width: 243px;
-  height: 97px;
-  align-items: center;
-  background: #DFE8CC;
   backdrop-filter: none;
   text-decoration: none;
-  font-size: 12px;
+}
+
+.button {
+  background-color: transparent;
 }
 </style>
