@@ -7,27 +7,28 @@
           <h1>Bienvenue !</h1>
           <h2>Se connecter</h2>
         </div>
-        <form @submit.prevent="login">
-          <ion-item color="secondary">
-            <ion-icon :icon="mailOutline" slot="start"></ion-icon>
-            <input type="email" placeholder="Email" class="custom" v-model="email">
-          </ion-item>
-          <ion-item color="secondary">
-            <ion-icon :icon="lockClosedOutline" slot="start"></ion-icon>
-            <input type="password" placeholder="********" class="custom" v-model="password">
-          </ion-item>
+        <form @submit.prevent="login()">
+          <div class="center">
+            <ion-item color="secondary">
+              <ion-icon :icon="mailOutline" slot="start"></ion-icon>
+              <input type="email" placeholder="Email" class="custom" v-model="email">
+            </ion-item>
+            <ion-item color="secondary">
+              <ion-icon :icon="lockClosedOutline" slot="start"></ion-icon>
+              <input type="password" placeholder="********" class="custom" v-model="password">
+            </ion-item>
+          
+            <div class="bottom">
+              <ion-button type="submit" color="primary">Se connecter</ion-button>
 
-          <div class="bottom">
-            <ion-button type="submit" color="primary">Se connecter</ion-button>
-
-            <div class="link">
-              <p color="primary">Vous n'avez pas de compte ? <br>
-                <a color="primary" href="/create">Créer un compte</a> 
-              </p>
+              <div class="link">
+                <p color="primary">Vous n'avez pas de compte ? <br>
+                  <a color="primary" href="/create">Créer un compte</a> 
+                </p>
+              </div>
             </div>
           </div>
         </form>
-
       </div>
     </ion-content>
   </ion-page>
@@ -61,21 +62,18 @@ export default defineComponent({
 
   methods: {
     async login() {
-      const response = await fetch('http://localhost:3000/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: this.email, password: this.password }),
+      axios.post('http://localhost:3000/login', {
+        email: this.email,
+        password: this.password
+      })
+      .then(response => {
+        console.log(response.data); // affiche l'ID utilisateur renvoyé par le serveur
+        this.$router.push(`/my-profil/${response.data.ID}`)
+      })
+      .catch(error => {
+        console.error(error.response.data); // affiche l'erreur renvoyée par le serveur
       });
-      
-      if (response.ok) {
-        const data = await response.json();
-        const userID = data.userId;
-        console.log(userID);
-        this.$router.push(`/my-profil/${userID}`)
-      } else {
-        console.log("Une erreur est survenue")
-      }
-    },
+    }
   }
  
 })
@@ -89,6 +87,12 @@ export default defineComponent({
   align-items: center;
   padding: 33px 20px;
   gap: 25px;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .title, .link{
@@ -124,7 +128,7 @@ ion-item {
   --padding-start: 10px;
   --padding-top: 0px;
   --border-style: none;
-  --min-height: 72px;
+  --min-height: 64px;
 }
 
 ion-input .custom {
@@ -133,16 +137,25 @@ ion-input .custom {
 
 }
 
+input{
+  background: transparent;
+  border: none;
+}
+
+input:focus {
+  outline: none;
+}
+
+
 ion-button {
   font-family: Nunito;
   --border-radius: 10px;
   --padding-top: 20px;
   --padding-bottom: 20px;
-  font-size: 20px;
-  }
+  font-size: 18px;
+}
 
   .link {
-    display: flex;
     text-align: center;
     padding: 0px;
   }
@@ -151,5 +164,7 @@ ion-button {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-right: 50px;
+    margin-left: 50px;
   }
 </style>

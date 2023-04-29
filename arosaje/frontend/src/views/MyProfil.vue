@@ -109,7 +109,7 @@ export default defineComponent({
   mounted() {
     const userID = this.$route.params.userID;
     console.log(userID)
-    axios.get(`http://localhost:3000/users`)
+    axios.get(`http://localhost:3000/users/${userID}`)
       .then(response => {
         this.user = response.data;
       })
@@ -117,7 +117,7 @@ export default defineComponent({
         console.error(error);
       });
 
-    axios.get(`http://localhost:3000/plants`)
+    axios.get(`http://localhost:3000/plants/${userID}`)
       .then(response => {
         this.plants = response.data;
       })

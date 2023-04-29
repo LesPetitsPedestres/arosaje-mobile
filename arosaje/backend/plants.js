@@ -3,13 +3,12 @@ const sqlite3 = require('sqlite3').verbose();
 
 
 const router = express.Router();
-const requireLogin = require('./middlewares/requireLogin');
 
 // Ouvrir la connexion à la base de données
 const db = new sqlite3.Database('../database/arosaje.db');
 
 // Endpoint pour récupérer toutes les plantes
-router.get('/plants', requireLogin, (req, res) => {
+router.get('/plants', (req, res) => {
   db.all('SELECT * FROM plants', (err, rows) => {
     if (err) {
       console.error(err.message);
@@ -20,8 +19,8 @@ router.get('/plants', requireLogin, (req, res) => {
 });
 
 // Endpoint pour récupérer les plantes d'un propriétaire
-router.get('/plants/:ownerId', requireLogin, (req, res) => {
-  const ownerId = req.cookies.ownerId;
+router.get('/plants/:ownerId', (req, res) => {
+  const ownerId = req.params.ownerId;
 
   db.all(`SELECT plants.*, users.name as owner_name, users.firstname FROM plants INNER JOIN users ON plants.owner_id = users.id WHERE plants.owner_id = ${ownerId}`, (err, rows) => {
   if (err) {
@@ -33,7 +32,7 @@ router.get('/plants/:ownerId', requireLogin, (req, res) => {
 });
 
 // Endpoint pour récupérer le détail d'une plante par son ID
-router.get('/plant-details/:plantId', requireLogin, (req, res) => {
+router.get('/plant-details/:plantId', (req, res) => {
   const plantId = req.params.plantId;
 
   db.get(`SELECT plants.*, users.firstname, users.name as owner_name, users.role FROM plants
@@ -48,7 +47,7 @@ router.get('/plant-details/:plantId', requireLogin, (req, res) => {
 });
 
 // Endpoint Update le détail de la plante (seulement pour le owner)
-router.put('/plant-details/:id', requireLogin, (req, res) => {
+router.put('/plant-details/:id', (req, res) => {
   const { name, species, address, photo_path } = req.body
   const plantID = req.params.id;
 
