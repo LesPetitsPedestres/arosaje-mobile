@@ -1,12 +1,13 @@
 <template>
-    <div class="information-conseil">
+    <div class="flex">
         <div class="top">
+            <div></div>
+            <h4 class="info-title">Conseils</h4>
             <div class="add-advice" v-if="role == 'botanist'">
-                <button class="button" @click="$router.push(`/${userID}/add-plant`)">
+                <button class="button" @click="$router.push(`/${userID}/${plantID}/add-advice`)">
                     <ion-icon :icon="addOutline" color="primary"></ion-icon>
                 </button>
             </div>
-            <h4 class="info-title">Conseils</h4>
         </div>
         <div class="content-conseils">
             <div class="conseil">
@@ -14,9 +15,9 @@
                     <div class="top-name">
                         <h5 class="name">{{ botanist_firstname }} {{ botanist_name }}</h5>
                         <div v-if="role == 'botanist'" class="edit_delete">
-                            <a href="/edit-advice">
+                            <button class="button" @click="$router.push(`/${userID}/${plantID}/${advice_id}/edit-advice`)">
                                 <ion-icon :icon="createOutline" color="primary"></ion-icon>
-                            </a>
+                            </button>
                             <a class="button"  @click="setOpen(true)">
                                 <ion-icon :icon="trashBinOutline" color="primary"></ion-icon>
                             </a>
@@ -41,7 +42,7 @@
                 </div>
                 <div class="buttons">
                     <ion-button color="tertiary" id="cancel" @click="setOpen(false)">Annuler</ion-button>
-                    <ion-button color="danger" id="create">Supprimer</ion-button>
+                    <ion-button color="danger" id="create" @click="deleteAdvice()">Supprimer</ion-button>
                 </div>
             </ion-content>
         </ion-modal>
@@ -53,6 +54,8 @@ import { defineComponent } from 'vue';
 import { IonModal, IonIcon, IonButton, IonContent, } from '@ionic/vue'
 import { chevronDownOutline, chevronUpOutline, createOutline, addOutline,trashBinOutline } from 'ionicons/icons';
 
+import axios from 'axios';
+
 export default defineComponent({
     name: 'AdviceCard',
     props: {
@@ -61,13 +64,15 @@ export default defineComponent({
         botanist_name: String,
         title: String,
         role: String,
+        advice_id: Number,
     },
 
     data() {
         return {
             showFullText: false,
             isOpen: false,
-            userID: this.$route.params.userID
+            userID: this.$route.params.userID,
+            plantID: this.$route.params.plantID,
         }
     },
 
@@ -103,6 +108,18 @@ export default defineComponent({
         setOpen(isOpen: boolean) {
             this.isOpen = isOpen;
         },
+
+        async deleteAdvice() {
+            axios.delete(`http://localhost:3000/advices/${this.advice_id}`)
+                .then(response => {
+                // La plante a été supprimée avec succès, tu peux faire une action ici si besoin
+                console.log(response.data.message);
+                })
+                .catch(error => {
+                // Une erreur est survenue, tu peux afficher un message d'erreur ou faire une action ici si besoin
+                console.error(error.message);
+            });
+        }
     },
 })
 </script>
@@ -114,6 +131,7 @@ export default defineComponent({
     align-items: center;
     padding: 10px 0px;
     gap: 22px;
+    width: auto;
 
     font-family: 'Nunito';
     font-style: normal;
@@ -124,18 +142,25 @@ export default defineComponent({
 
     /* Inside auto layout */
 
-    order: 2;
     align-self: stretch;
 }
 
-.top {
+.flex {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: right;
-    align-self: stretch;
-    padding-right: 10px;
-    padding-left: 10px;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+.top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+
+  padding: 0px;
+  gap: 5px;
 }
 
 .add-advice {
@@ -172,10 +197,7 @@ export default defineComponent({
     line-height: 33px;
     text-align: center;
     margin: 0px;
-    flex: none;
-    order: 0;
     align-self: stretch;
-    flex-grow: 0;
 }
 
 .content-conseils{
@@ -187,10 +209,7 @@ export default defineComponent({
 
     height: auto;
     overflow-y: scroll;
-
-    flex: none;
-    order: 1;
-    flex-grow: 0;
+    align-self: stretch;
 }
 
 .conseil {
@@ -198,14 +217,13 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0px 15px;
 
-    height: 187.83px;
+    height: auto;
     overflow-y: scroll;
+    align-self: stretch;
 
     gap: 15px;
     border-bottom: 1px solid #395144;
-    order: 0;
 }
 
 .middle {
@@ -214,6 +232,7 @@ export default defineComponent({
     align-items: flex-start;
     padding: 0px;
     order: 0;
+    align-self: stretch;
 }
 
 .name {

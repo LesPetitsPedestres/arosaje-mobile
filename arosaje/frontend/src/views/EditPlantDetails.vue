@@ -199,6 +199,7 @@ ion-item {
 input{
   background: transparent;
   border: none;
+  width: 100%;
 }
 
 input:focus {
