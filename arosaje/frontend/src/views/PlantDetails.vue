@@ -11,7 +11,7 @@
         </ion-header>
         <ion-content>
             <div class="picture">
-                <img src="{{ plant.photo_path }}" alt="">
+                <img :src="plant.photo_path" alt="">
             </div>
             <div class="container">
                 <div class="title">
@@ -33,10 +33,10 @@
                     <p class="info-date">Du 10/02/2023 au 12/01/2023</p>
                 </div>
 
-                <div v-if="advices.length > 0">
-                    <div class="information" v-for="advice in advices" :key="advice.ID">
+                <div class="information-conseil" v-if="advices.length > 0">
+                    <div class="flex" v-for="advice in advices" :key="advice.ID">
                         <AdviceCard :title="advice.title" :botanist_firstname="advice.botanist_firstname" :botanist_name="advice.botanist_name" :content="advice
-                        .content" :role="user.role"/>
+                        .content" :role="user.role" :advice_id="advice.ID"/>
                     </div>
                 </div>
 
@@ -45,10 +45,11 @@
                         <div></div>
                         <h4 class="info-title">Conseils</h4>
                         <div class="add-advice" v-if="user.role == 'botanist'">
-                            <button class="button" @click="$router.push(`/${userID}/add-plant`)">
+                            <button class="button" @click="$router.push(`/${userID}/${plantID}/add-advice`)">
                                 <ion-icon :icon="addOutline" color="primary"></ion-icon>
                             </button>
                         </div>
+                        <div v-else></div>
                     </div>
                     <div class="content-no-conseils" >
                         <div class="no-conseil">
@@ -65,7 +66,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { IonPage, IonIcon, } from '@ionic/vue';
+import { IonPage, IonIcon, IonContent, IonHeader, IonButtons, IonMenuButton, IonToolbar, IonTitle } from '@ionic/vue';
 import { chevronDownOutline, chevronUpOutline, createOutline, addOutline } from 'ionicons/icons';
 import AdviceCard from '../components/Advice.vue'
 
@@ -79,6 +80,7 @@ interface PlantResponse {
   owner_id: number;
   firstname: string;
   owner_name: string;
+  photo_path: string;
 }
 
 interface AdvicesResponse {
@@ -115,7 +117,7 @@ export default defineComponent({
     },
 
     components: {
-        IonPage, IonIcon,
+        IonPage, IonIcon, IonContent, IonHeader, IonButtons, IonMenuButton, IonToolbar, IonTitle,
         AdviceCard, 
     },
 
@@ -185,6 +187,7 @@ export default defineComponent({
     width: 100%;
 
     order: 0;
+    position: relative;
     z-index: 1;
 }
 
@@ -316,6 +319,10 @@ ion-icon {
     flex-direction: column;
     align-items: flex-start;
     padding: 0px;
+}
+.flex {
+    display: flex;
+    align-self: stretch;
 }
 
 </style>

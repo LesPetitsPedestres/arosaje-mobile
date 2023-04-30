@@ -12,20 +12,22 @@
         <div class="container">
             <ion-label class="title">Ajouter un conseil</ion-label>
             <div class="center">
+              <form @submit.prevent="addAdvice">
                 <ion-list lines="none" class="add-fields">
                     <ion-item color="light">
                         <ion-icon :icon="bulbOutline" slot="start"></ion-icon>
-                        <ion-input type="text" placeholder="Titre" class="custom"></ion-input>
+                        <input type="text" placeholder="Titre" class="custom" v-model="form.title">
                     </ion-item>
                     <ion-item color="light">
                         <ion-icon :icon="textOutline" slot="start"></ion-icon>
-                        <ion-textarea :auto-grow="true" type="text" placeholder="Ecrivez votre conseil" class="custom"></ion-textarea>
+                        <textarea :auto-grow="true" type="text" placeholder="Ecrivez votre conseil" class="custom" v-model="form.content"></textarea>
                     </ion-item>  
                 </ion-list>
                 <div class="buttons">
-                    <ion-button color="tertiary" id="cancel" @click="$router.push('plant-details')">Annuler</ion-button>
-                    <ion-button color="primary" id="create">Ajouter</ion-button>
+                    <ion-button color="tertiary" id="cancel" @click="$router.push(`/${userID}/plant-details/${plantID}`)">Annuler</ion-button>
+                    <ion-button type="submit" color="primary" id="create">Ajouter</ion-button>
                 </div>
+              </form>
             </div>
         </div>
     </ion-page>
@@ -35,6 +37,8 @@
 import { defineComponent } from 'vue';
 import { IonPage, IonList, IonButton } from '@ionic/vue';
 import {  textOutline, bulbOutline } from 'ionicons/icons';
+
+import axios from 'axios';
 
 export default defineComponent({
   components: {
@@ -47,6 +51,33 @@ export default defineComponent({
         bulbOutline
     }
   },
+
+  data() {
+    return {
+      form: {
+        title: '',
+        content: '',
+      },
+      userID: this.$route.params.userID,
+      plantID: this.$route.params.plantID
+    }
+  },
+
+  methods: {
+    async addAdvice() {
+      const { title, content } = this.form;
+      const botanistID = this.$route.params.userID;
+      const plantID = this.$route.params.plantID;
+
+      try {
+        await axios.post(`http://localhost:3000/advices/${botanistID}/${plantID}`, { title, content, botanistID: botanistID, plantID: plantID }, {
+        });
+        this.$router.push(`${this.userID}/plant-details/${this.plantID}`);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  }
  
 })
 </script>
@@ -77,10 +108,6 @@ export default defineComponent({
   border-radius: 50px 50px 0px 0px;
 
   /* Inside auto layout */
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
 }
 
 .title {
@@ -160,5 +187,16 @@ ion-datetime {
 .buttons #create {
     background: #395144;
 }
+
+input, textarea{
+  background: transparent;
+  border: none;
+  width: 100%;
+}
+
+input:focus {
+  outline: none;
+}
+
 
 </style>

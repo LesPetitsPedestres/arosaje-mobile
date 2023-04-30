@@ -5,20 +5,12 @@ import CreateProfil from '../views/CreateProfil.vue'
 import MyProfil from '../views/MyProfil.vue'
 import EditMyProfil from '../views/EditMyProfil.vue'
 import AddPlant from '../views/AddPlant.vue'
+import MyPlantsList from '../views/MyPlantsList.vue'
 import PlantsList from '../views/PlantsList.vue'
 import PlantDetails from '../views/PlantDetails.vue'
 import EditPlantDetails from '../views/EditPlantDetails.vue'
 import AddAdvice from '../views/AddAdvice.vue'
-
-// AJOUTER UN GARDE ROUTE : 
-// beforeEnter: (to, from, next) => {
-//       if (user.role === 'propriétaire') {
-//         next();
-//       } else {
-//         next('/page-non-autorisee');
-//       }
-//     }
-//   },
+import EditAdvice from '../views/EditAdvice.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -47,6 +39,10 @@ const routes: Array<RouteRecordRaw> = [
     component: AddPlant,
   },
   {
+    path: '/:userID/my-plants-list',
+    component: MyPlantsList,
+  },
+  {
     path: '/:userID/plants-list',
     component: PlantsList,
   },
@@ -59,8 +55,12 @@ const routes: Array<RouteRecordRaw> = [
     component: EditPlantDetails,
   },
   {
-    path: '/:userID/add-advice',
+    path: '/:userID/:plantID/add-advice',
     component: AddAdvice,
+  },
+  {
+    path: '/:userID/:plantID/:adviceID/edit-advice',
+    component: EditAdvice,
   },
 ]
 
