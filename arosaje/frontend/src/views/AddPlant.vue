@@ -13,24 +13,28 @@
             <!-- <div class="profil"></div> -->
             <ion-label class="title">Ajouter une plante</ion-label>
             <div class="center">
+              <form @submit.prevent="addPlant">
                 <ion-list lines="none" class="add-fields">
+                    <div class="picture"> 
+                      <img :src="form.photo_path || '../assets/images/Plante.jpg'" alt="" v-if="imageData == null">
+                      <img :src="imageData" v-if="imageData !== null">
+                    </div>
                     <ion-item color="light">
-                        <ion-icon :icon="imagesOutline" slot="start"></ion-icon>
-                        <ion-input type="button" @click="capturePhoto" placeholder="Prendre une photo" class="custom"></ion-input>
+                        <ion-icon :icon="leafOutline" slot="start"></ion-icon>
+                        <input type="text" placeholder="Nom de la plante" class="custom" v-model="form.name">
                     </ion-item>
-                    <img :src="imageData" v-if="imageData !== null">
                     <ion-item color="light">
-                        <ion-icon :icon="personOutline" slot="start"></ion-icon>
-                        <ion-input type="text" placeholder="Nom" class="custom"></ion-input>
+                      <ion-icon :icon="imagesOutline" slot="start"></ion-icon>
+                      <input type="button" @click="capturePhoto" placeholder="Prendre une photo" class="custom">
                     </ion-item>
                     <ion-item color="light">
                         <ion-icon :icon="leafOutline" slot="start"></ion-icon>
-                        <ion-input type="text" placeholder="Espèce" class="custom"></ion-input>
+                        <input type="text" placeholder="Espèce" v-model="form.species" class="custom">
                         <!-- Espèce détecter par l'ia de la photo -->
                     </ion-item>
                     <ion-item color="light">
                         <ion-icon :icon="locationOutline" slot="start"></ion-icon>
-                        <ion-input type="text" placeholder="Adresse" class="custom"></ion-input> 
+                        <input type="text" placeholder="Adresse" v-model="form.address" class="custom">
                         <!-- Localisation automatique via la photo -->
                     </ion-item>
         
@@ -60,9 +64,10 @@
                 <!-- TODO Voir pour la sélection d'une range de date -->
                 </ion-list>
                 <div class="buttons">
-                    <ion-button color="tertiary" id="cancel" @click="$router.push('my-profil')">Annuler</ion-button>
-                    <ion-button color="primary" id="create">Créer</ion-button>
+                    <ion-button color="tertiary" id="cancel" @click="$router.push(`/my-profil/${userID}`)">Annuler</ion-button>
+                    <ion-button type="submit" color="primary" id="create">Créer</ion-button>
                 </div>
+              </form>
             </div>
         </div>
     </ion-page>
@@ -71,8 +76,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { IonPage, IonModal, IonList, IonButton, IonDatetime, IonDatetimeButton, } from '@ionic/vue';
-import { locationOutline, personOutline, imagesOutline, calendarNumberOutline, leafOutline } from 'ionicons/icons';
+import { locationOutline, imagesOutline, calendarNumberOutline, leafOutline } from 'ionicons/icons';
 import { Camera, CameraResultType } from '@capacitor/camera';
+import { Geolocation } from '@capacitor/geolocation';
+
+import axios from 'axios';
 
 export default defineComponent({
   components: {
@@ -82,7 +90,6 @@ export default defineComponent({
   setup() {
     return {
         locationOutline,
-        personOutline,
         imagesOutline,
         calendarNumberOutline,
         leafOutline,
@@ -91,20 +98,52 @@ export default defineComponent({
 
   data() {
     return {
-        imageData: null as string | null, 
+      imageData: null as string | null, 
+      form: {
+        name: '',
+        species: '',
+        address: '',
+        photo_path: null as string | null,
+      },
+      userID: this.$route.params.userID
     }
   },
 
-   methods: {
+  methods: {
     async capturePhoto() {
+      const position = await Geolocation.getCurrentPosition();
       const image = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
         resultType: CameraResultType.DataUrl,
       });
       this.imageData = image.dataUrl || null;
+      this.form.photo_path = this.imageData;
+
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=AIzaSyBfqAMKCMdaV9KQnsM-8uKlguTH-36cyDg`);
+      const address = response.data.results[0].formatted_address;
+
+    // Enregistrer l'adresse dans le formulaire
+    this.form.address = address;
     },
-  },
+
+    async addPlant() {
+      const { name, species, address, photo_path } = this.form;
+      const ownerID = this.$route.params.userID;
+
+      try {
+        await axios.post(`http://localhost:3000/plant-details/${ownerID}`, { name, species, address, photo_path, ownerID: ownerID }, {
+          maxContentLength: 20000,
+          maxBodyLength: 20000
+        });
+        // this.$router.push(`${this.userID}/plant-details/${this.plantID}`);
+        // Rediriger vers la liste des plantes du propriétaire
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+  }
  
 })
 </script>
@@ -191,6 +230,16 @@ ion-datetime {
   --background: #ffffff;
   color: #4B4B4B;
   border-radius: 16px;
+}
+
+input{
+  background: transparent;
+  border: none;
+  width: 100%;
+}
+
+input:focus {
+  outline: none;
 }
 
 .buttons {

@@ -64,4 +64,21 @@ router.put('/plant-details/:id', (req, res) => {
 });
 
 // Endpoint ajout d'une plante
+router.post('/plant-details/:ownerID', (req, res) => {
+  const { name, species, address, photo_path, } = req.body;
+  const owner_id = req.params.ownerID;
+
+  const sql = `INSERT INTO plants (name, species, address, photo_path, owner_id) VALUES (?, ?, ?, ?, ?)`;
+  const params = [name, species, address, photo_path, owner_id];
+
+  db.run(sql, params, (err) => {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).json({ message: 'Une erreur est survenue lors de la création de la plante' });
+    }
+
+    return res.status(201).json({ message: 'Plante créée avec succès' });
+  });
+});
+
 module.exports = router;
