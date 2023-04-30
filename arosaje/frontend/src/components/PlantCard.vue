@@ -1,5 +1,5 @@
 <template>
-        <ion-card color="secondary" class="card-custom" @click="$router.push(`/plant-details`)">
+        <ion-card color="secondary" class="card-custom" @click="$router.push(`/${userID}/plant-details/${plant_id}`)">
           <div class="left">
             <img :src="plant_photo" alt="plante" class="plante-picture">
             <div class="content">
@@ -22,7 +22,8 @@ export default defineComponent({
   props: {
     plant_name: String,
     plant_adress: String,
-    plant_photo: String
+    plant_photo: String,
+    plant_id: Number,
   },
 
   components: {
@@ -32,6 +33,12 @@ export default defineComponent({
   setup() {
     return {
       arrowForwardOutline,
+    }
+  },
+
+  data() {
+    return {
+      userID : this.$route.params.userID,
     }
   }
  

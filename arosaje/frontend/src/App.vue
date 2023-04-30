@@ -16,14 +16,14 @@
             </button>
           </ion-item>
           <ion-item v-if="user.role == 'sitter'">
-            <button class="custom-menu"  @click="$router.push(`/${user.ID}/plants-list`)">
+            <button class="custom-menu"  @click="$router.push(`/${user.ID}/my-plants-list`)">
               <ion-icon :icon="timeOutline" slot="start" color="primary"></ion-icon>
               Liste de mes gardes
             </button>
           </ion-item>
 
           <ion-item v-if="user.role == 'owner'">
-            <button class="custom-menu" @click="$router.push(`/${user.ID}/plants-list`)">
+            <button class="custom-menu" @click="$router.push(`/${user.ID}/my-plants-list`)">
               <ion-icon :icon="leafOutline" slot="start" color="primary"></ion-icon>
               Liste de mes plantes
             </button>
@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { IonApp, IonRouterOutlet, IonMenu, IonList, IonIcon, IonItem, IonToolbar, IonTitle, IonHeader } from '@ionic/vue';
+import { IonApp, IonRouterOutlet, IonMenu, IonList, IonIcon, IonItem, IonToolbar, IonTitle, IonHeader, IonContent } from '@ionic/vue';
 import { leafOutline, timeOutline, personOutline } from 'ionicons/icons';
 import { defineComponent } from 'vue';
 import axios from 'axios'
@@ -72,7 +72,7 @@ export default defineComponent ({
   },
 
   components: {
-    IonApp, IonRouterOutlet, IonMenu, IonList, IonIcon, IonItem, IonToolbar, IonTitle, IonHeader
+    IonApp, IonRouterOutlet, IonMenu, IonList, IonIcon, IonItem, IonToolbar, IonTitle, IonHeader, IonContent
   },
 
   data() {

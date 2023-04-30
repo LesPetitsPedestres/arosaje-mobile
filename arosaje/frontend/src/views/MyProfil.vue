@@ -57,7 +57,11 @@
             <div v-for="plant in plants" :key="plant.ID">
               <MyPlants :plant_id="plant.ID" :plant_name="plant.name" :user_id="user.ID"/>
             </div>
-            <button class="see-more" color="secondary" @click="$router.push(`/${user.ID}/plants-list`)" v-if="plants">
+            <button v-if="user.role == 'owner' || user.role == 'sitter'" class="see-more" color="secondary" @click="$router.push(`/${user.ID}/my-plants-list`)">
+              Voir plus
+              <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
+          </button>
+          <button v-if="user.role == 'botanist'" class="see-more" color="secondary" @click="$router.push(`/${user.ID}/plants-list`)">
               Voir plus
               <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
           </button>
