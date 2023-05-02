@@ -11,6 +11,7 @@ import PlantDetails from '../views/PlantDetails.vue'
 import EditPlantDetails from '../views/EditPlantDetails.vue'
 import AddAdvice from '../views/AddAdvice.vue'
 import EditAdvice from '../views/EditAdvice.vue'
+import TestSpecies from '../views/TestSpecies.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -61,6 +62,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/:userID/:plantID/:adviceID/edit-advice',
     component: EditAdvice,
+  },
+  {
+    path: '/test-species',
+    component: TestSpecies,
   },
 ]
 

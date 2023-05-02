@@ -30,7 +30,6 @@
           </div>
         </div>
         <div v-else-if="currentContent === 'map'">
-          <Map :apiKey="apiKey" :addressList="addressList" />
         </div>
 
       </ion-page>
@@ -41,7 +40,6 @@
   import { IonPage, IonHeader, IonToolbar, IonTitle, IonSearchbar, IonButtons, IonMenuButton, IonSegment, IonSegmentButton, IonIcon } from '@ionic/vue'
   import { mapOutline,listOutline } from 'ionicons/icons';
   import PlantCard from '../components/PlantCard.vue';
-  import Map from '../components/Map.vue';
   
   import axios from 'axios'
   
@@ -56,7 +54,7 @@
   export default defineComponent({
     components: {
       IonPage, IonHeader, IonToolbar, IonTitle, IonSearchbar, IonButtons, IonMenuButton, IonSegment, IonSegmentButton, IonIcon,
-      PlantCard, Map
+      PlantCard,
     },
 
     setup() {
@@ -67,30 +65,14 @@
   
     data() {
       return {
-        apiKey: 'AIzaSyBfqAMKCMdaV9KQnsM-8uKlguTH-36cyDg',
-        addressList: [],
         plantes:[] as PlanteResponse[],
         currentContent: 'list',
       };
     },
 
-    async created() {
-      await this.fetchAddresses();
-    },
-
     methods: {
       changeContent() {
         console.log('Segment changed:', this.currentContent)
-      },
-
-      async fetchAddresses() {
-        try {
-          const response = await fetch('http://localhost:3000/plants');
-          const data = await response.json();
-          this.addressList = data.map((plant: any) => plant.address);
-        } catch (error) {
-          console.error(error);
-        }
       },
     },
   

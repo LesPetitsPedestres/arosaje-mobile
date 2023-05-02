@@ -75,7 +75,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { IonPage, IonModal, IonList, IonButton, IonDatetime, IonDatetimeButton, } from '@ionic/vue';
+import { IonPage, IonModal, IonList, IonButton, IonDatetime, IonDatetimeButton, IonButtons, IonMenuButton, IonHeader, IonToolbar, IonTitle, } from '@ionic/vue';
 import { locationOutline, imagesOutline, calendarNumberOutline, leafOutline } from 'ionicons/icons';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { Geolocation } from '@capacitor/geolocation';
@@ -84,7 +84,7 @@ import axios from 'axios';
 
 export default defineComponent({
   components: {
-    IonPage, IonModal, IonList, IonButton, IonDatetime, IonDatetimeButton, 
+    IonPage, IonModal, IonList, IonButton, IonDatetime, IonDatetimeButton, IonButtons, IonMenuButton, IonHeader, IonToolbar, IonTitle,
   },
 
   setup() {
@@ -105,7 +105,8 @@ export default defineComponent({
         address: '',
         photo_path: null as string | null,
       },
-      userID: this.$route.params.userID
+      userID: this.$route.params.userID,
+      speciesID: '',
     }
   },
 
@@ -124,7 +125,7 @@ export default defineComponent({
       const address = response.data.results[0].formatted_address;
 
     // Enregistrer l'adresse dans le formulaire
-    this.form.address = address;
+      this.form.address = address;
     },
 
     async addPlant() {
@@ -143,7 +144,26 @@ export default defineComponent({
       }
     },
 
-  }
+  },
+
+  // mounted() {
+  //   //Identification espèce
+  //   const data = {
+  //     api_key: "fQGtzQOtwBggm1K6U7agoOmU4JYWDYzqOdVCokKmszjKRBU7OY",
+  //     images: this.form.photo_path,
+  //     modifiers: ["crops_fast", "similar_images"],
+  //     plant_language: "fr",
+  //     plant_details: ["name_authority",],
+  //   }
+
+  //   axios.post('https://plant.id/api/v2/identify', data).then(res => {
+  //       console.log('Success:', res.data);
+  //       this.speciesID = res.data.plant_details;
+  //       console.log(this.speciesID)
+  //   }).catch(error => {
+  //       console.error('Error: ', error)
+  //   })
+  // }
  
 })
 </script>
