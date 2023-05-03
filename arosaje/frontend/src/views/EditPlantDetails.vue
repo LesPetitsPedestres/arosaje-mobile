@@ -10,10 +10,8 @@
             </ion-toolbar>
         </ion-header>
     <form @submit.prevent="updatePlant">
-      <div class="picture"> 
-        <img :src="form.photo_path || '../assets/images/Plante.jpg'" alt="" v-if="imageData == null">
-        <img :src="imageData" v-if="imageData !== null">
-      </div>
+      <div class="picture" :style="{'background-image': 'url(data:image/png;base64,' + form.photo_path + ')'}" v-if="imageData == null"></div>
+      <div class="picture" :style="{'background-image': 'url(data:image/png;base64,' + imageData + ')'}" v-if="imageData !== null"></div>
       <div class="container">
         <ion-label class="title">Editer</ion-label>
           <div class="edit-fields">
@@ -24,7 +22,8 @@
                   <input type="text" class="custom" v-model="form.address" :placeholder="plant.address">
               </ion-item>
               <ion-item color="light">
-                  <input type="text" class="custom" v-model="form.species" :placeholder="plant.species">
+                <input type="text" :placeholder="result || 'Espèce'" v-model="form.species" class="custom">
+                <ion-button @click="identifyPlant" class="button-ia"><ion-icon :icon="searchOutline"></ion-icon></ion-button>
               </ion-item>
               <ion-item color="light">
                 <ion-icon :icon="imagesOutline" slot="start"></ion-icon>
@@ -43,7 +42,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { IonPage } from '@ionic/vue';
-import { imagesOutline } from 'ionicons/icons';
+import { imagesOutline, searchOutline } from 'ionicons/icons';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -67,7 +66,7 @@ export default defineComponent({
 
   setup() {
     return {
-      imagesOutline
+      imagesOutline, searchOutline
     }
   },
 
@@ -75,6 +74,7 @@ export default defineComponent({
     return {
       plant: {} as PlantResponse,
       imageData: null as string | null, 
+      result: null as string | null,
       form: {
         name: '',
         species: '',
@@ -102,9 +102,9 @@ export default defineComponent({
       const image = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
-        resultType: CameraResultType.DataUrl,
+        resultType: CameraResultType.Base64,
       });
-      this.imageData = image.dataUrl || null;
+      this.imageData = image.base64String || null;
       this.form.photo_path = this.imageData;
 
       const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=AIzaSyBfqAMKCMdaV9KQnsM-8uKlguTH-36cyDg`);
@@ -112,6 +112,40 @@ export default defineComponent({
 
       // Enregistrer l'adresse dans le formulaire
       this.form.address = address;
+    },
+
+    async identifyPlant() {
+      const apiUrl = 'https://plant.id/api/v2/identify';
+
+      const data = {
+        api_key: "fQGtzQOtwBggm1K6U7agoOmU4JYWDYzqOdVCokKmszjKRBU7OY",
+        images: [this.imageData],
+        /* modifiers docs: https://github.com/flowerchecker/Plant-id-API/wiki/Modifiers */
+        modifiers: ["crops_fast", "similar_images"],
+        plant_language: "en",
+        /* plant details docs: https://github.com/flowerchecker/Plant-id-API/wiki/Plant-details */
+        plant_details: ["common_names",
+            "url",
+            "name_authority",
+            "wiki_description",
+            "taxonomy",
+            "synonyms"],
+      };
+
+      axios.post(apiUrl, data)
+        .then(res => {
+          console.log(res.data);
+          const suggestions = res.data.suggestions;
+          if (suggestions.length > 0) {
+            const plantName = suggestions[0].plant_name;
+            console.log(`Plant name: ${plantName}`);
+            this.result = plantName;
+          } else {
+            console.log('No plant suggestions found');
+          }
+        }).catch(error => {
+          console.error(error);
+        })        
     },
 
     async updatePlant() {
@@ -155,7 +189,8 @@ export default defineComponent({
   width: 100%;
   height: 100%;
 
-  order: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .title {
@@ -204,5 +239,16 @@ input{
 input:focus {
   outline: none;
 }
+
+.picture {
+  width: 100%;
+  height: 460px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
 
 </style>

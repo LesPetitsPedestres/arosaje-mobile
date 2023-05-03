@@ -15,10 +15,8 @@
             <div class="center">
               <form @submit.prevent="addPlant">
                 <ion-list lines="none" class="add-fields">
-                    <div class="picture"> 
-                      <img :src="form.photo_path || ''" alt="" v-if="imageData == null">
-                      <img :src="imageData" v-if="imageData !== null">
-                    </div>
+                    <div class="picture" :style="{'background-image': 'url(data:image/png;base64,' + form.photo_path + ')'}" v-if="imageData == null"></div>
+                    <div class="picture" :style="{'background-image': 'url(data:image/png;base64,' + imageData + ')'}" v-if="imageData !== null"></div>
                     <ion-item color="light">
                         <ion-icon :icon="leafOutline" slot="start"></ion-icon>
                         <input type="text" placeholder="Nom de la plante" class="custom" v-model="form.name">
@@ -29,7 +27,8 @@
                     </ion-item>
                     <ion-item color="light">
                         <ion-icon :icon="leafOutline" slot="start"></ion-icon>
-                        <input type="text" placeholder="Espèce" v-model="form.species" class="custom">
+                        <input type="text" :placeholder="result || 'Espèce'" v-model="form.species" class="custom">
+                        <ion-button @click="identifyPlant" class="button-ia"><ion-icon :icon="searchOutline"></ion-icon></ion-button>
                         <!-- Espèce détecter par l'ia de la photo -->
                     </ion-item>
                     <ion-item color="light">
@@ -76,7 +75,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { IonPage, IonModal, IonList, IonButton, IonDatetime, IonDatetimeButton, IonButtons, IonMenuButton, IonHeader, IonToolbar, IonTitle, IonItem, IonIcon, IonInput, IonLabel } from '@ionic/vue';
-import { locationOutline, imagesOutline, calendarNumberOutline, leafOutline } from 'ionicons/icons';
+import { locationOutline, imagesOutline, calendarNumberOutline, leafOutline, searchOutline } from 'ionicons/icons';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -93,12 +92,14 @@ export default defineComponent({
         imagesOutline,
         calendarNumberOutline,
         leafOutline,
+        searchOutline,
     }
   },
 
   data() {
     return {
       imageData: null as string | null, 
+      result: null as string | null,
       form: {
         name: '',
         species: '',
@@ -116,9 +117,9 @@ export default defineComponent({
       const image = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
-        resultType: CameraResultType.DataUrl,
+        resultType: CameraResultType.Base64,
       });
-      this.imageData = image.dataUrl || null;
+      this.imageData = image.base64String || null;
       this.form.photo_path = this.imageData;
 
       const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=AIzaSyBfqAMKCMdaV9KQnsM-8uKlguTH-36cyDg`);
@@ -126,6 +127,40 @@ export default defineComponent({
 
     // Enregistrer l'adresse dans le formulaire
       this.form.address = address;
+    },
+
+    async identifyPlant() {
+      const apiUrl = 'https://plant.id/api/v2/identify';
+
+      const data = {
+        api_key: "fQGtzQOtwBggm1K6U7agoOmU4JYWDYzqOdVCokKmszjKRBU7OY",
+        images: [this.imageData],
+        /* modifiers docs: https://github.com/flowerchecker/Plant-id-API/wiki/Modifiers */
+        modifiers: ["crops_fast", "similar_images"],
+        plant_language: "en",
+        /* plant details docs: https://github.com/flowerchecker/Plant-id-API/wiki/Plant-details */
+        plant_details: ["common_names",
+            "url",
+            "name_authority",
+            "wiki_description",
+            "taxonomy",
+            "synonyms"],
+      };
+
+      axios.post(apiUrl, data)
+        .then(res => {
+          console.log(res.data);
+          const suggestions = res.data.suggestions;
+          if (suggestions.length > 0) {
+            const plantName = suggestions[0].plant_name;
+            console.log(`Plant name: ${plantName}`);
+            this.result = plantName;
+          } else {
+            console.log('No plant suggestions found');
+          }
+        }).catch(error => {
+          console.error(error);
+        })        
     },
 
     async addPlant() {
@@ -200,6 +235,13 @@ export default defineComponent({
     background: none;
 }
 
+.picture {
+  width: 100px;
+  height: 100px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 ion-item {
   font-family: Nunito;
   border-radius: 10px;
@@ -241,6 +283,13 @@ input{
 
 input:focus {
   outline: none;
+}
+
+ion-button {
+  --background: #ffffff;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  --border-radius: 10px;
 }
 
 .buttons {
