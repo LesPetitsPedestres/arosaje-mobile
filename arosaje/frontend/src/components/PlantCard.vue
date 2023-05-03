@@ -77,6 +77,11 @@ export default defineComponent({
     gap: 16px;
   }
 
+  .left img {
+    width: 120px;
+    height: 120px;
+  }
+
   .plante-picture {
     width: 120px;
     height: 120px;

@@ -1,6 +1,6 @@
 <template>
   <router-link :to="{ path: `/${user_id}/plant-details/${plant_id}`}" class="link-plant">
-    <div class="plante">
+    <div class="plante" :style="{ backgroundImage: `url(${photo_path})` }">
       <div class="name">
         <ion-label color="primary" class="label">{{ plant_name }}</ion-label>
         <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>
@@ -25,7 +25,10 @@ export default defineComponent ({
       },
       user_id: {
         type: Number,
-      }
+      },
+      photo_path: {
+        type: String,
+      },
     },
 
     setup() {
@@ -52,9 +55,9 @@ ion-icon {
 }
 
 .plante {
-  background-image: url("../assets/images/Plante.jpg");
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
 
   width: 243px;
   height: 319px;
@@ -64,6 +67,13 @@ ion-icon {
   flex-direction: column;
   align-items: center;
   justify-content: end;
+}
+
+img {
+  height: 319px;
+  width: 243px;
+
+  object-fit: cover;
 }
 
 .link-plant {

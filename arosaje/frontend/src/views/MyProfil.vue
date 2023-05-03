@@ -55,7 +55,8 @@
           </div>
           <div class="plantes">
             <div v-for="plant in plants" :key="plant.ID">
-              <MyPlants :plant_id="plant.ID" :plant_name="plant.name" :user_id="user.ID"/>
+              <MyPlants :plant_id="plant.ID" :plant_name="plant.name" :user_id="user.ID" :photo_path="plant.photo_path
+              "/>
             </div>
             <button v-if="user.role == 'owner' || user.role == 'sitter'" class="see-more" color="secondary" @click="$router.push(`/${user.ID}/my-plants-list`)">
               Voir plus
@@ -73,7 +74,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { IonPage, IonIcon, IonItem, IonLabel,  } from '@ionic/vue';
+import { IonPage, IonIcon, IonItem, IonLabel, IonButtons, IonMenuButton, IonHeader, IonToolbar, IonTitle, } from '@ionic/vue';
 import { callOutline, mailOutline, lockClosedOutline, arrowForwardOutline, createOutline, addOutline } from 'ionicons/icons';
 import MyPlants from '../components/MyPlants.vue';
 
@@ -93,6 +94,7 @@ interface PlantsResponse {
   ID: number;
   name: string;
   owner_id: number;
+  photo_path: string;
 }
 
 export default defineComponent({
@@ -105,7 +107,7 @@ export default defineComponent({
   }, 
 
   components: {
-    IonPage, IonIcon, IonItem, IonLabel,
+    IonPage, IonIcon, IonItem, IonLabel, IonButtons, IonMenuButton, IonHeader, IonToolbar, IonTitle,
     MyPlants,
   },
 

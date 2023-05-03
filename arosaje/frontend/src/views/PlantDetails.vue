@@ -162,6 +162,13 @@ export default defineComponent({
     top: 0px;
 }
 
+.picture img {
+    width: 500px;
+    align-content: center;
+    display: flex;
+    height: 420px;
+}
+
 .top{
   display: flex;
   justify-content: space-between;
