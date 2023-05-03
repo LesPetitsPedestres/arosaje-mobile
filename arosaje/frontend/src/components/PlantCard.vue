@@ -1,7 +1,8 @@
 <template>
         <ion-card color="secondary" class="card-custom" @click="$router.push(`/${userID}/plant-details/${plant_id}`)">
           <div class="left">
-            <img :src="plant_photo" alt="plante" class="plante-picture">
+            <!-- <img :src="plant_photo" alt="plante" class="plante-picture"> -->
+            <div class="picture" :style="{'background-image': 'url(data:image/png;base64,' + plant_photo + ')'}"></div>
             <div class="content">
               <ion-card-header>
                 <ion-card-title>{{ plant_name }}</ion-card-title>
@@ -73,13 +74,10 @@ export default defineComponent({
     gap: 16px;
   }
 
-  .left img {
-    width: 120px;
-    height: 120px;
-  }
-
-  .plante-picture {
-    width: 120px;
-    height: 120px;
-  }
+  .picture {
+  width: 120px;
+  height: 120px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 </style>

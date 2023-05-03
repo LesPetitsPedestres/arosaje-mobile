@@ -1,6 +1,6 @@
 <template>
   <router-link :to="{ path: `/${user_id}/plant-details/${plant_id}`}" class="link-plant">
-    <div class="plante" :style="{ backgroundImage: `url(${photo_path})` }">
+    <div class="plante" :style="{'background-image': 'url(data:image/png;base64,' + photo_path + ')'}">
       <div class="name">
         <ion-label color="primary" class="label">{{ plant_name }}</ion-label>
         <ion-icon :icon="arrowForwardOutline" slot="end" color="primary"></ion-icon>

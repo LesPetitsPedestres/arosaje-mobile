@@ -10,9 +10,7 @@
             </ion-toolbar>
         </ion-header>
         <ion-content>
-            <div class="picture">
-                <img :src="plant.photo_path" alt="">
-            </div>
+            <div class="picture" :style="{'background-image': 'url(data:image/png;base64,' + plant.photo_path + ')'}"></div>
             <div class="container">
                 <div class="title">
                         <div class="edit" v-if="user.role == 'owner'">
@@ -155,18 +153,13 @@ export default defineComponent({
 }
 
 .picture {
-    background-color: #FFFFFF;
-    position: absolute;
-    width: 100%;
-    left: 0px;
-    top: 0px;
-}
-
-.picture img {
-    width: 500px;
-    align-content: center;
-    display: flex;
-    height: 420px;
+  width: 100%;
+  height: 460px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  left: 0px;
+  top: 0px;
 }
 
 .top{
