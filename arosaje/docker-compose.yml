@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  frontend:
+    image: img-front
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+    command: npm run serve
+  backend:
+    image: img-back
+    ports:
+      - "3000:3000"
+    command: node app.js
