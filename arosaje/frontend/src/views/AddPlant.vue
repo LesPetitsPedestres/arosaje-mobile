@@ -16,7 +16,7 @@
               <form @submit.prevent="addPlant">
                 <ion-list lines="none" class="add-fields">
                     <div class="picture"> 
-                      <img :src="form.photo_path || '../assets/images/Plante.jpg'" alt="" v-if="imageData == null">
+                      <img :src="form.photo_path || ''" alt="" v-if="imageData == null">
                       <img :src="imageData" v-if="imageData !== null">
                     </div>
                     <ion-item color="light">
@@ -75,7 +75,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { IonPage, IonModal, IonList, IonButton, IonDatetime, IonDatetimeButton, IonButtons, IonMenuButton, IonHeader, IonToolbar, IonTitle, } from '@ionic/vue';
+import { IonPage, IonModal, IonList, IonButton, IonDatetime, IonDatetimeButton, IonButtons, IonMenuButton, IonHeader, IonToolbar, IonTitle, IonItem, IonIcon, IonInput, IonLabel } from '@ionic/vue';
 import { locationOutline, imagesOutline, calendarNumberOutline, leafOutline } from 'ionicons/icons';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { Geolocation } from '@capacitor/geolocation';
@@ -84,7 +84,7 @@ import axios from 'axios';
 
 export default defineComponent({
   components: {
-    IonPage, IonModal, IonList, IonButton, IonDatetime, IonDatetimeButton, IonButtons, IonMenuButton, IonHeader, IonToolbar, IonTitle,
+    IonPage, IonModal, IonList, IonButton, IonDatetime, IonDatetimeButton, IonButtons, IonMenuButton, IonHeader, IonToolbar, IonTitle, IonItem, IonIcon, IonInput, IonLabel
   },
 
   setup() {
@@ -145,25 +145,6 @@ export default defineComponent({
     },
 
   },
-
-  // mounted() {
-  //   //Identification espèce
-  //   const data = {
-  //     api_key: "fQGtzQOtwBggm1K6U7agoOmU4JYWDYzqOdVCokKmszjKRBU7OY",
-  //     images: this.form.photo_path,
-  //     modifiers: ["crops_fast", "similar_images"],
-  //     plant_language: "fr",
-  //     plant_details: ["name_authority",],
-  //   }
-
-  //   axios.post('https://plant.id/api/v2/identify', data).then(res => {
-  //       console.log('Success:', res.data);
-  //       this.speciesID = res.data.plant_details;
-  //       console.log(this.speciesID)
-  //   }).catch(error => {
-  //       console.error('Error: ', error)
-  //   })
-  // }
  
 })
 </script>

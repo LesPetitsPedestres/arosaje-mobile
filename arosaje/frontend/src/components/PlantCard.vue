@@ -47,10 +47,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.card {
-    text-decoration: none;
-  }
-
   .card-custom {
     font-family: Nunito;
     display: flex;

@@ -15,32 +15,32 @@ import { addOutline, arrowForwardOutline } from 'ionicons/icons';
 import { IonLabel, IonIcon } from '@ionic/vue';
 
 export default defineComponent ({
-    name: 'MyPlants',
-    props: {
-      plant_id: {
-        type: Number,
-      },
-      plant_name: {
-        type: String,
-      },
-      user_id: {
-        type: Number,
-      },
-      photo_path: {
-        type: String,
-      },
+  name: 'MyPlants',
+  props: {
+    plant_id: {
+      type: Number,
     },
-
-    setup() {
-        return {
-            arrowForwardOutline,
-            addOutline,
-        }
+    plant_name: {
+      type: String,
     },
+    user_id: {
+      type: Number,
+    },
+    photo_path: {
+      type: String,
+    },
+  },
 
-    components: {
-      IonLabel, IonIcon
+  setup() {
+    return {
+      arrowForwardOutline,
+      addOutline,
     }
+  },
+
+  components: {
+    IonLabel, IonIcon
+  }
 })
 
 </script>

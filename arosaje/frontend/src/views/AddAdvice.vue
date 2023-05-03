@@ -35,14 +35,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { IonPage, IonList, IonButton } from '@ionic/vue';
-import {  textOutline, bulbOutline } from 'ionicons/icons';
+import { IonPage, IonList, IonButton, IonIcon, IonLabel, IonItem, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, } from '@ionic/vue';
+import { textOutline, bulbOutline } from 'ionicons/icons';
 
 import axios from 'axios';
 
 export default defineComponent({
   components: {
-    IonPage, IonList, IonButton, 
+    IonPage, IonList, IonButton, IonItem, IonIcon, IonLabel, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton,
   },
 
   setup() {

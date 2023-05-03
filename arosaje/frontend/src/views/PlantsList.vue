@@ -93,45 +93,16 @@
     overflow: scroll;
     background-color: #FFFFFF;
   }
-    .head {
-      gap: 10px;
-    }
-    ion-title {
-      font-family: Nunito;
-    }
+  .head {
+    gap: 10px;
+  }
   
-    .card {
-      text-decoration: none;
-    }
-  
-    .card-custom {
-      font-family: Nunito;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      border-radius: 20px;
-      height: 120px;
-    }
-  
-    ion-card-title {
-      font-size: 24px;
-    }
-  
-    ion-icon {
-      font-size: 40px;
-      padding-right: 5px;
-    }
-  
-    .left {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 16px;
-    }
-  
-    .plante-picture {
-      width: 120px;
-      height: 120px;
-    }
+  ion-title {
+    font-family: Nunito;
+  }
+    
+  ion-icon {
+    font-size: 40px;
+    padding-right: 5px;
+  }
   </style>

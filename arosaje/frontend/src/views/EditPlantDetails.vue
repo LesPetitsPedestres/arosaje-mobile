@@ -67,7 +67,7 @@ export default defineComponent({
 
   setup() {
     return {
-        imagesOutline
+      imagesOutline
     }
   },
 
@@ -96,7 +96,7 @@ export default defineComponent({
       });
   },
 
-   methods: {
+  methods: {
     async capturePhoto() {
       const position = await Geolocation.getCurrentPosition();
       const image = await Camera.getPhoto({
@@ -110,8 +110,8 @@ export default defineComponent({
       const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=AIzaSyBfqAMKCMdaV9KQnsM-8uKlguTH-36cyDg`);
       const address = response.data.results[0].formatted_address;
 
-    // Enregistrer l'adresse dans le formulaire
-    this.form.address = address;
+      // Enregistrer l'adresse dans le formulaire
+      this.form.address = address;
     },
 
     async updatePlant() {
@@ -130,7 +130,6 @@ export default defineComponent({
 
   }
 
-
 })
 </script>
 
@@ -141,22 +140,22 @@ export default defineComponent({
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 22px 22px;
-    gap: 20px;
-    align-self: stretch;
-    margin-top: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 22px 22px;
+  gap: 20px;
+  align-self: stretch;
+  margin-top: 200px;
 
-    background: #DFE8CC;
-    box-shadow: 0px -4px 20px 9px rgba(0, 0, 0, 0.25);
-    border-radius: 50px 50px 0px 0px;
+  background: #DFE8CC;
+  box-shadow: 0px -4px 20px 9px rgba(0, 0, 0, 0.25);
+  border-radius: 50px 50px 0px 0px;
 
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
-    order: 1;
+  order: 1;
 }
 
 .title {

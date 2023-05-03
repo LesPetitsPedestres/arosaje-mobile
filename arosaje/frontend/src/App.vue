@@ -82,15 +82,15 @@ export default defineComponent ({
   },
 
   mounted() {
-        const userID = this.$route.params.userID;
-        axios.get(`http://localhost:3000/users/${userID}`)
-          .then(response => {
-            this.user = response.data;
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      }
+    const userID = this.$route.params.userID;
+    axios.get(`http://localhost:3000/users/${userID}`)
+      .then(response => {
+        this.user = response.data;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
 })
 </script>
 

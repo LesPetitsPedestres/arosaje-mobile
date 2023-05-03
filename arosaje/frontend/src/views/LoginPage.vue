@@ -80,7 +80,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
 .container {
   display: flex;
   flex-direction: column;
@@ -156,16 +155,16 @@ ion-button {
   font-size: 18px;
 }
 
-  .link {
-    text-align: center;
-    padding: 0px;
-  }
+.link {
+  text-align: center;
+  padding: 0px;
+}
 
-  .bottom{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-right: 50px;
-    margin-left: 50px;
-  }
+.bottom{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 50px;
+  margin-left: 50px;
+}
 </style>

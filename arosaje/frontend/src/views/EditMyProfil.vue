@@ -41,7 +41,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { IonPage } from '@ionic/vue';
+import { IonPage, IonButton, IonLabel, IonItem, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, } from '@ionic/vue';
 
 import axios from 'axios'
 
@@ -56,7 +56,7 @@ interface UserResponse {
 
 export default defineComponent({
   components: {
-    IonPage,
+    IonPage, IonButton, IonLabel, IonItem, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton,
   },
 
   data() {
