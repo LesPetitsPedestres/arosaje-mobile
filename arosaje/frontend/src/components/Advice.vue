@@ -1,6 +1,6 @@
 <template>
     <div class="flex">
-        <div class="top">
+        <!-- <div class="top">
             <div></div>
             <h4 class="info-title">Conseils</h4>
             <div class="add-advice" v-if="role == 'botanist'">
@@ -8,7 +8,7 @@
                     <ion-icon :icon="addOutline" color="primary"></ion-icon>
                 </button>
             </div>
-        </div>
+        </div> -->
         <div class="content-conseils">
             <div class="conseil">
                 <div class="middle">

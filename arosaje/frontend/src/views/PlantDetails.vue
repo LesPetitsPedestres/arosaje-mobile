@@ -32,6 +32,16 @@
                 </div>
 
                 <div class="information-conseil" v-if="advices.length > 0">
+                    <div class="top">
+                        <div></div>
+                        <h4 class="info-title">Conseils</h4>
+                        <div class="add-advice" v-if="user.role == 'botanist'">
+                            <button class="button" @click="$router.push(`/${userID}/${plantID}/add-advice`)">
+                                <ion-icon :icon="addOutline" color="primary"></ion-icon>
+                            </button>
+                        </div>
+                        <div v-else></div>
+                    </div>
                     <div class="flex" v-for="advice in advices" :key="advice.ID">
                         <AdviceCard :title="advice.title" :botanist_firstname="advice.botanist_firstname" :botanist_name="advice.botanist_name" :content="advice
                         .content" :role="user.role" :advice_id="advice.ID"/>
