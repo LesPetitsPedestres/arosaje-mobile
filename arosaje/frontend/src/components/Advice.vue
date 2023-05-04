@@ -1,14 +1,5 @@
 <template>
     <div class="flex">
-        <!-- <div class="top">
-            <div></div>
-            <h4 class="info-title">Conseils</h4>
-            <div class="add-advice" v-if="role == 'botanist'">
-                <button class="button" @click="$router.push(`/${userID}/${plantID}/add-advice`)">
-                    <ion-icon :icon="addOutline" color="primary"></ion-icon>
-                </button>
-            </div>
-        </div> -->
         <div class="content-conseils">
             <div class="conseil">
                 <div class="middle">
@@ -125,50 +116,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.information-conseil {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px 0px;
-    gap: 22px;
-    width: auto;
-
-    font-family: 'Nunito';
-    font-style: normal;
-
-    color: #395144;
-    background: #FFFFFF;
-    border-radius: 20px;
-
-    /* Inside auto layout */
-
-    align-self: stretch;
-}
-
 .flex {
     display: flex;
     flex-direction: column;
     width: 100%;
     padding: 0px;
     margin: 0px;
-}
-
-.top{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  align-self: stretch;
-
-  padding: 0px;
-  gap: 5px;
-}
-
-.add-advice {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: right;
-    align-self: stretch;
 }
 
 .edit_delete {
@@ -188,15 +141,6 @@ export default defineComponent({
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-self: stretch;
-}
-
-.info-title {
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 33px;
-    text-align: center;
-    margin: 0px;
     align-self: stretch;
 }
 
