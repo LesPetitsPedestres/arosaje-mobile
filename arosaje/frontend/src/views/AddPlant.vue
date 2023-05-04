@@ -81,6 +81,10 @@ import { Geolocation } from '@capacitor/geolocation';
 
 import axios from 'axios';
 
+interface PlantResponse {
+  ID: number;
+}
+
 export default defineComponent({
   components: {
     IonPage, IonModal, IonList, IonButton, IonDatetime, IonDatetimeButton, IonButtons, IonMenuButton, IonHeader, IonToolbar, IonTitle, IonItem, IonIcon, IonInput, IonLabel
@@ -107,8 +111,19 @@ export default defineComponent({
         photo_path: null as string | null,
       },
       userID: this.$route.params.userID,
+      plant: {} as PlantResponse,
       speciesID: '',
     }
+  },
+
+  mounted() {
+    axios.get(`http://localhost:3000/plant-details/${this.plant.ID}`)
+        .then(response => {
+            this.plant = response.data;
+        })
+        .catch(error => {
+            console.error(error);
+        });
   },
 
   methods: {
@@ -172,7 +187,7 @@ export default defineComponent({
           maxContentLength: 20000,
           maxBodyLength: 20000
         });
-        // this.$router.push(`${this.userID}/plant-details/${this.plantID}`);
+        this.$router.replace(`${this.userID}/plant-details/${this.plant.ID}`);
         // Rediriger vers la liste des plantes du propriétaire
       } catch (error) {
         console.error(error);
