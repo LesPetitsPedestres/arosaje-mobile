@@ -22,7 +22,7 @@ router.get("/plants/:ownerId", (req, res) => {
   const ownerId = req.params.ownerId;
 
   db.all(
-    `SELECT plants.*, users.name as owner_name, users.firstname FROM plants INNER JOIN users ON plants.owner_id = users.id WHERE plants.owner_id = ${ownerId}`,
+    `SELECT plants.*, users.name as owner_name, users.firstname FROM plants INNER JOIN users ON plants.owner_id = users.id WHERE plants.owner_id = '${ownerId}'`,
     (err, rows) => {
       if (err) {
         console.error(err.message);

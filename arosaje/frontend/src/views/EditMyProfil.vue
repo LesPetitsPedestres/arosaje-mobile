@@ -46,7 +46,7 @@ import { IonPage, IonButton, IonLabel, IonItem, IonHeader, IonToolbar, IonTitle,
 import axios from 'axios'
 
 interface UserResponse {
-  ID: number;
+  ID: string;
   name: string;
   firstname: string;
   phone: string;
@@ -85,10 +85,9 @@ export default defineComponent({
 
   methods: {
     async updateProfil() {
-      const { name, firstname, phone, email, password } = this.form;
  
       try {
-        await axios.put(`http://localhost:3000/users/${this.userID}`, { name, firstname, phone, email, password }, {
+        await axios.put(`http://localhost:3000/users/${this.userID}`, {name: this.form.name, firstname: this.form.firstname,phone: this.form.phone, email: this.form.email, password: this.form.password }, {
           maxContentLength: 20000,
           maxBodyLength: 20000
         });

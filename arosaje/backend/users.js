@@ -14,7 +14,7 @@ router.get("/users/:userId", (req, res) => {
     return res.status(401).send("Vous n'êtes pas connecté");
   }
 
-  db.get(`SELECT * FROM users WHERE id = ${userId}`, (err, rows) => {
+  db.get(`SELECT * FROM users WHERE id = '${userId}'`, (err, rows) => {
     if (err) {
       console.error(err.message);
       return res.status(500).send("Erreur serveur");
@@ -29,11 +29,11 @@ router.get("/users/:userId", (req, res) => {
 
 // Endpoint Update profil user
 router.put("/users/:userId", (req, res) => {
-  const { name, firstame, phone, email, password } = req.body;
+  const { name, firstname, phone, email, password } = req.body;
   const userId = req.params.userId;
 
-  const sql = `UPDATE plants SET name = ?, firstame = ?, phone = ?, email = ?, password = ? WHERE id = ?`;
-  const params = [name, firstame, phone, email, password, userId];
+  const sql = `UPDATE users SET name = ?, firstname = ?, phone = ?, email = ?, password = ? WHERE id = ?`;
+  const params = [name, firstname, phone, email, password, userId];
   db.run(sql, params, (err) => {
     if (err) {
       console.error(err.message);

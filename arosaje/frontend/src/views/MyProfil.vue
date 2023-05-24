@@ -81,7 +81,7 @@ import MyPlants from '../components/MyPlants.vue';
 import axios from 'axios'
 
 interface UserResponse {
-  ID: number;
+  ID: string;
   name: string;
   firstname: string;
   phone: string;
@@ -93,7 +93,7 @@ interface UserResponse {
 interface PlantsResponse {
   ID: number;
   name: string;
-  owner_id: number;
+  owner_id: string;
   photo_path: string;
 }
 

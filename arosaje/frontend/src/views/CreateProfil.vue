@@ -9,41 +9,41 @@
         <div class="content">
           <ion-item color="secondary">
           <ion-icon :icon="personOutline" slot="start"></ion-icon>
-          <ion-input type="email" placeholder="Nom Complet" class="custom"></ion-input>
+          <input v-model="name" type="text" placeholder="Nom Complet" class="custom">
         </ion-item>
         <ion-item color="secondary">
           <ion-icon :icon="mailOutline" slot="start"></ion-icon>
-          <ion-input type="email" placeholder="Email" class="custom"></ion-input>
+          <input v-model="email" type="email" placeholder="Email" class="custom">
         </ion-item>
         <ion-item color="secondary">
           <ion-icon :icon="lockClosedOutline" slot="start"></ion-icon>
-          <ion-input type="password" placeholder="Mot de passe" class="custom"></ion-input>
+          <input v-model="pwd1" type="password" placeholder="Mot de passe" class="custom">
         </ion-item>
         <ion-item color="secondary">
           <ion-icon :icon="lockClosedOutline" slot="start"></ion-icon>
-          <ion-input type="password" placeholder="Confirmer le mot de passe" class="custom"></ion-input>
+          <input v-model="pwd2" type="password" placeholder="Confirmer le mot de passe" class="custom">
         </ion-item>
 
         <div class="checkbox-group">
           <ion-label class="group-title">Vous êtes : </ion-label>
           <ion-item-group color="secondary">
             <ion-item class="option">
-              <ion-checkbox slot="start" color="primary"></ion-checkbox>
+              <ion-checkbox v-model="propIsCheck" slot="start" color="primary"></ion-checkbox>
               <ion-label class="checkbox-title">Propriétaire</ion-label>
             </ion-item>
             <ion-item class="option">
-              <ion-checkbox slot="start" color="primary"></ion-checkbox>
+              <ion-checkbox v-model="gardienIsCheck" slot="start" color="primary"></ion-checkbox>
               <ion-label class="checkbox-title">Gardien</ion-label>
             </ion-item>
             <ion-item class="option">
-              <ion-checkbox slot="start" color="primary"></ion-checkbox>
+              <ion-checkbox v-model="botanistIsCheck" slot="start" color="primary"></ion-checkbox>
               <ion-label class="checkbox-title">Botanise</ion-label>
             </ion-item>
           </ion-item-group>
         </div>
 
         <div class="bottom">
-          <ion-button color="primary">S'inscrire</ion-button>
+          <ion-button @click="signUp()" color="primary">S'inscrire</ion-button>
 
           <div class="link">
             <p color="primary">Vous avez déjà un compte ? <br>
@@ -62,8 +62,23 @@
 import { defineComponent } from 'vue';
 import { IonPage, IonContent, IonIcon, IonButton, IonImg, IonItemGroup, IonCheckbox } from '@ionic/vue';
 import { lockClosedOutline, mailOutline, personOutline } from 'ionicons/icons';
+import { supabase } from "../supabase"
+import axios from 'axios';
+
+
 
 export default defineComponent({
+  data() {
+    return {
+      name:'',
+      email:'',
+      pwd1:'',
+      pwd2:'',
+      gardienIsCheck: false,
+      propIsCheck: false,
+      botanistIsCheck: false,
+    }
+  },
   setup() {
     return {
       mailOutline,
@@ -75,7 +90,31 @@ export default defineComponent({
   components: {
     IonPage, IonContent, IonIcon, IonButton, IonImg, IonItemGroup, IonCheckbox
   },
- 
+  methods: {
+  async signUp() {
+    const response = await supabase.auth.signUp({
+      email: this.email,
+      password: this.pwd1,
+    });
+    if (response) {
+      const role = []
+      if (this.propIsCheck) {
+        role.push('owner')
+      }
+      if (this.botanistIsCheck) {
+        role.push('botanist')
+      }
+      if (this.gardienIsCheck) {
+        role.push('sitter')
+      }
+      
+      await axios.post(`http://localhost:3000/register`, {ID: response.data.user?.id, name : this.name, email: this.email, password: this.pwd1, role: role[0] })
+          
+    }
+    
+  },
+
+ },
 })
 </script>
 
@@ -91,6 +130,16 @@ export default defineComponent({
 
 ion-img {
   width: 270px;
+}
+
+input{
+  background: transparent;
+  border: none;
+  width: 100%;
+}
+
+input:focus {
+  outline: none;
 }
 
 .content {
@@ -126,7 +175,7 @@ ion-item {
   --min-height: 72px;
 }
 
-ion-input .custom {
+input .custom {
   font-family: Nunito;
   --placeholder-opacity: .8;
 }

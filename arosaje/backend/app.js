@@ -45,11 +45,11 @@ app.post("/login", (req, res) => {
 
 // Endpoint d'Inscription
 app.post("/register", async (req, res) => {
-  const { email, password } = req.body;
+  const {ID, name, email, password, role} = req.body;
 
   db.run(
-    "INSERT INTO users (email, password) VALUES (?, ?)",
-    [email, password],
+    "INSERT INTO users (ID, name, email, password, role) VALUES (?, ?, ?, ?, ?)",
+    [ID, name, email, password, role],
     (err) => {
       if (err) {
         res

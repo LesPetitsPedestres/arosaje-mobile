@@ -11,15 +11,15 @@
           <div class="center">
             <ion-item color="secondary">
               <ion-icon :icon="mailOutline" slot="start"></ion-icon>
-              <input type="email" placeholder="Email" class="custom" v-model="email">
+              <input v-model="email" type="email" placeholder="Email" class="custom">
             </ion-item>
             <ion-item color="secondary">
               <ion-icon :icon="lockClosedOutline" slot="start"></ion-icon>
-              <input type="password" placeholder="********" class="custom" v-model="password">
+              <input v-model="password" type="password" placeholder="********" class="custom">
             </ion-item>
           
             <div class="bottom">
-              <ion-button type="submit" color="primary">Se connecter</ion-button>
+              <ion-button @click="login()" type="submit" color="primary">Se connecter</ion-button>
 
               <div class="link">
                 <p color="primary">Vous n'avez pas de compte ? <br>
@@ -38,6 +38,7 @@
 import { defineComponent } from 'vue';
 import { IonPage, IonContent, IonIcon, IonButton, IonImg } from '@ionic/vue';
 import { lockClosedOutline, mailOutline } from 'ionicons/icons';
+import { supabase } from "../supabase"
 
 import axios from 'axios'
 
@@ -62,17 +63,20 @@ export default defineComponent({
 
   methods: {
     async login() {
-      axios.post('http://localhost:3000/login', {
-        email: this.email,
-        password: this.password
-      })
-      .then(response => {
-        console.log(response.data); // affiche l'ID utilisateur renvoyé par le serveur
-        this.$router.push(`/my-profil/${response.data.ID}`)
-      })
-      .catch(error => {
-        console.error(error.response.data); // affiche l'erreur renvoyée par le serveur
-      });
+    try {
+    const response = await supabase.auth.signInWithPassword({
+      email: this.email,
+      password: this.password
+    });
+
+    if (response) {
+      if (response.data.user) {
+        this.$router.push(`/my-profil/${response.data.user.id}`);
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
     }
   }
  

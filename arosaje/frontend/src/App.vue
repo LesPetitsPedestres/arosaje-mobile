@@ -58,7 +58,7 @@ import { defineComponent } from 'vue';
 import axios from 'axios'
 
 interface UserResponse {
-  ID: number;
+  ID: string;
   role: string;
 }
 
@@ -82,14 +82,18 @@ export default defineComponent ({
   },
 
   mounted() {
-    const userID = this.$route.params.userID;
-    axios.get(`http://localhost:3000/users/${userID}`)
-      .then(response => {
-        this.user = response.data;
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    if (this.$route.fullPath != '/login') {
+      
+      const userID = this.$route.params.userID;
+      axios.get(`http://localhost:3000/users/${userID}`)
+        .then(response => {
+          this.user = response.data;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+    
   }
 })
 </script>
